@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+
+# next
+.next/
+out/
+
+# local env files with secrets
+.env
+.env.local
+.env.*.local
+!.env.local.example
+
+# local browser/auth state
+.spotify-charts-profile/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.tmp
+*.docx
+
+# local/raw/processed data should stay local; public/data is the deploy snapshot
+data/raw/
+data/processed/
+!data/manual/

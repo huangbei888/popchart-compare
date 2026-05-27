@@ -1,0 +1,82 @@
+[
+  {
+    "work_id": "olivia_vampire",
+    "type": "single",
+    "title": "vampire",
+    "artist": "Olivia Rodrigo",
+    "release_date": "2023-06-30",
+    "cover_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/08/9e/07/089e0799-b405-9e69-b648-e6a19df9879c/24UMGIM30485.rgb.jpg/600x600bb.jpg",
+    "album_name": "GUTS (spilled)",
+    "release_date_source": "manual"
+  },
+  {
+    "work_id": "olivia_good4u",
+    "type": "single",
+    "title": "good 4 u",
+    "artist": "Olivia Rodrigo",
+    "release_date": "2021-05-14",
+    "cover_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/76/46/48/76464884-0e9c-1951-a3f6-ce02f74c2b19/21UMGIM26093.rgb.jpg/600x600bb.jpg",
+    "album_name": "SOUR (Video Version)",
+    "release_date_source": "manual"
+  },
+  {
+    "work_id": "sabrina_espresso",
+    "type": "single",
+    "title": "Espresso",
+    "artist": "Sabrina Carpenter",
+    "release_date": "2024-05-17",
+    "cover_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/57/e8/7b/57e87ba0-5057-9bb9-c247-ce7dbe426e89/24UMGIM55213.rgb.jpg/600x600bb.jpg",
+    "album_name": "Espresso EP",
+    "release_date_source": "manual"
+  },
+  {
+    "work_id": "sabrina_ppp",
+    "type": "single",
+    "title": "Please Please Please",
+    "artist": "Sabrina Carpenter",
+    "release_date": "2024-08-23",
+    "cover_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c9/a3/e9/c9a3e987-3952-a6ac-7975-680f2033e660/25UMGIM10586.rgb.jpg/600x600bb.jpg",
+    "album_name": "Short n' Sweet (Deluxe)",
+    "release_date_source": "manual"
+  },
+  {
+    "work_id": "taylor_fortnight",
+    "type": "single",
+    "title": "Fortnight",
+    "artist": "Taylor Swift",
+    "release_date": "2024-04-19",
+    "cover_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6b/7d/61/6b7d61e4-e6f1-83bc-d645-463aa06b33c4/24UMGIM29563.rgb.jpg/600x600bb.jpg",
+    "album_name": "THE TORTURED POETS DEPARTMENT",
+    "release_date_source": "manual"
+  },
+  {
+    "work_id": "taylor_antihero",
+    "type": "single",
+    "title": "Anti-Hero",
+    "artist": "Taylor Swift",
+    "release_date": "2022-10-21",
+    "cover_url": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/3d/01/f2/3d01f2e5-5a08-835f-3d30-d031720b2b80/22UM1IM07364.rgb.jpg/600x600bb.jpg",
+    "album_name": "Midnights",
+    "release_date_source": "manual"
+  },
+  {
+    "work_id": "miley_flowers",
+    "type": "single",
+    "title": "Flowers",
+    "artist": "Miley Cyrus",
+    "release_date": "2023-01-12",
+    "cover_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/8c/67/ff/8c67ff91-31c3-3fef-1884-ce3ec89f3af4/196589946874.jpg/600x600bb.jpg",
+    "album_name": "Endless Summer Vacation",
+    "release_date_source": "manual"
+  },
+  {
+    "work_id": "billie_wwimf",
+    "type": "single",
+    "title": "What Was I Made For?",
+    "artist": "Billie Eilish",
+    "release_date": "2023-07-13",
+    "cover_url": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/c0/54/97/c05497aa-c19f-bf4f-de29-71edf30fbefb/075679688767.jpg/600x600bb.jpg",
+    "album_name": "Barbie The Album",
+    "release_date_source": "manual"
+  }
+]

@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #f4fff7;
+  background: #050806;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #050806;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    linear-gradient(135deg, rgba(30, 215, 96, 0.15), transparent 30%),
+    linear-gradient(72deg, rgba(30, 215, 96, 0.055), transparent 42%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.026) 0 1px, transparent 1px 86px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 72px),
+    linear-gradient(180deg, #050806 0%, #0b100d 44%, #050806 100%);
+  color: #f4fff7;
+}
+
+button,
+select,
+input {
+  font: inherit;
+}
+
+@layer components {
+  .stage-shell {
+    color: #f4fff7;
+  }
+
+  .stage-panel {
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background:
+      linear-gradient(135deg, rgba(30, 215, 96, 0.06), transparent 36%),
+      rgba(13, 18, 15, 0.94);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 28px 90px rgba(0, 0, 0, 0.42);
+    backdrop-filter: blur(18px);
+  }
+
+  .stage-soft-panel {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.045);
+  }
+}
