@@ -77,12 +77,14 @@ export default function SearchCommand({
 
       <input
         value={query}
+        autoComplete="off"
         onChange={(event) => {
           setQuery(event.target.value);
           setLimitMessage(false);
         }}
         placeholder="Search vampire, Taylor Swift, Espresso..."
-        className="w-full rounded-full border border-white/10 bg-black/28 px-4 py-2.5 text-sm text-white outline-none transition placeholder:text-[#52635a] focus:border-[#1ed760]/70 focus:bg-black/36"
+        className="w-full rounded-full border border-white/10 bg-[#050806] px-4 py-2.5 text-sm text-[#f4fff7] outline-none transition placeholder:text-[#6f8178] focus:border-[#1ed760]/70 focus:bg-[#07100b]"
+        style={{ colorScheme: "dark" }}
       />
 
       {limitMessage ? (

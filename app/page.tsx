@@ -93,6 +93,27 @@ function includeMarkerXPoints(
   return Array.from(byX.values()).sort((a, b) => Number(a.sortValue ?? 0) - Number(b.sortValue ?? 0));
 }
 
+function parseRangeInput(value: string) {
+  if (!value.trim()) return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : null;
+}
+
+function parseRelativeIndex(value: string | number | null | undefined) {
+  const match = String(value ?? "").match(/\d+/);
+  if (!match) return null;
+  const parsed = Number(match[0]);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function isInRelativeRange(value: string | number | null | undefined, start: number | null, end: number | null) {
+  const index = parseRelativeIndex(value);
+  if (index === null) return true;
+  if (start !== null && index < start) return false;
+  if (end !== null && index > end) return false;
+  return true;
+}
+
 function normalizeSearchText(value: string | undefined) {
   return (value ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 }
@@ -145,6 +166,8 @@ export default function Home() {
   const [platform, setPlatform] = useState<Platform>("billboard");
   const [region, setRegion] = useState("us");
   const [timelineMode, setTimelineMode] = useState<TimelineMode>("absolute");
+  const [relativeRangeStart, setRelativeRangeStart] = useState("");
+  const [relativeRangeEnd, setRelativeRangeEnd] = useState("");
   const [chartValueMode, setChartValueMode] = useState<ChartValueMode>("rank");
   const [loadingCatalogs, setLoadingCatalogs] = useState(true);
   const [loadingEntries, setLoadingEntries] = useState(false);
@@ -285,9 +308,30 @@ export default function Home() {
     [allWorks, chartDates, filteredEntries, latestChartDate, platform, timelineMode],
   );
   const activeChartMarkers = effectiveChartValueMode === "rank" ? chartMarkers : [];
+  const rawRangeStart = parseRangeInput(relativeRangeStart);
+  const rawRangeEnd = parseRangeInput(relativeRangeEnd);
+  const rangeStart =
+    rawRangeStart !== null && rawRangeEnd !== null && rawRangeStart > rawRangeEnd ? rawRangeEnd : rawRangeStart;
+  const rangeEnd =
+    rawRangeStart !== null && rawRangeEnd !== null && rawRangeStart > rawRangeEnd ? rawRangeStart : rawRangeEnd;
+  const hasRelativeRange = timelineMode === "relative" && (rangeStart !== null || rangeEnd !== null);
+  const rangedChartData = useMemo(
+    () =>
+      hasRelativeRange
+        ? chartData.filter((point) => isInRelativeRange(point.x, rangeStart, rangeEnd))
+        : chartData,
+    [chartData, hasRelativeRange, rangeEnd, rangeStart],
+  );
+  const rangedChartMarkers = useMemo(
+    () =>
+      hasRelativeRange
+        ? activeChartMarkers.filter((marker) => isInRelativeRange(marker.x, rangeStart, rangeEnd))
+        : activeChartMarkers,
+    [activeChartMarkers, hasRelativeRange, rangeEnd, rangeStart],
+  );
   const chartDataWithMarkers = useMemo(
-    () => includeMarkerXPoints(chartData, activeChartMarkers, timelineMode),
-    [activeChartMarkers, chartData, timelineMode],
+    () => includeMarkerXPoints(rangedChartData, rangedChartMarkers, timelineMode),
+    [rangedChartData, rangedChartMarkers, timelineMode],
   );
   const metrics = useMemo(
     () => calculateMetrics(filteredEntries, allWorks, latestChartDate),
@@ -341,7 +385,7 @@ export default function Home() {
               <span className="rounded-full border border-[#1ed760]/40 bg-[#1ed760]/15 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-[#9fffc0]">
                 Music Data Lab
               </span>
-              <span className="rounded-full border border-white/10 bg-black/28 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-[#8fa399]">
+              <span className="rounded-full border border-white/10 bg-[#050806] px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-[#8fa399]">
                 Billboard + Spotify
               </span>
             </div>
@@ -407,7 +451,7 @@ export default function Home() {
             <div className="grid gap-4">
               <div>
                 <span className="mb-2 block text-sm font-semibold text-[#d6e7dc]">平台</span>
-                <div className="grid grid-cols-2 gap-2 rounded-[1.15rem] border border-white/10 bg-black/28 p-1">
+                <div className="grid grid-cols-2 gap-2 rounded-[1.15rem] border border-white/10 bg-[#050806] p-1">
                   {(["billboard", "spotify"] as Platform[]).map((value) => (
                     <button
                       key={value}
@@ -431,7 +475,7 @@ export default function Home() {
               <label className="grid gap-2 text-sm font-semibold text-[#d6e7dc]">
                 地区
                 <select
-                  className="rounded-[1.15rem] border border-white/10 bg-black/28 px-3 py-2 text-sm text-white outline-none transition focus:border-[#1ed760]/60"
+                  className="rounded-[1.15rem] border border-white/10 bg-[#050806] px-3 py-2 text-sm text-[#f4fff7] outline-none transition focus:border-[#1ed760]/60 disabled:text-[#8fa399]"
                   value={platform === "billboard" ? "us" : region}
                   onChange={(event) => setRegion(event.target.value)}
                   disabled={platform === "billboard"}
@@ -442,8 +486,60 @@ export default function Home() {
               </label>
 
               <div>
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <span className="block text-sm font-semibold text-[#d6e7dc]">
+                    {platform === "billboard" ? "周数范围" : "天数范围"}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setRelativeRangeStart("");
+                      setRelativeRangeEnd("");
+                    }}
+                    disabled={!relativeRangeStart && !relativeRangeEnd}
+                    className="rounded-full border border-white/10 px-2.5 py-1 text-xs font-black text-[#8fa399] transition hover:border-[#1ed760]/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    清空
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <label className="grid gap-1 rounded-[1.15rem] border border-white/10 bg-[#050806] p-2 text-xs font-semibold text-[#8fa399]">
+                    从 {platform === "billboard" ? "Week" : "Day"}
+                    <input
+                      type="number"
+                      min={1}
+                      inputMode="numeric"
+                      value={relativeRangeStart}
+                      onChange={(event) => setRelativeRangeStart(event.target.value)}
+                      disabled={timelineMode !== "relative"}
+                      placeholder="1"
+                      className="min-w-0 rounded-[0.85rem] border border-white/10 bg-[#07100b] px-3 py-2 text-sm font-black text-[#f4fff7] outline-none transition placeholder:text-[#52635a] focus:border-[#1ed760]/70 disabled:cursor-not-allowed disabled:opacity-40"
+                      style={{ colorScheme: "dark" }}
+                    />
+                  </label>
+                  <label className="grid gap-1 rounded-[1.15rem] border border-white/10 bg-[#050806] p-2 text-xs font-semibold text-[#8fa399]">
+                    到 {platform === "billboard" ? "Week" : "Day"}
+                    <input
+                      type="number"
+                      min={1}
+                      inputMode="numeric"
+                      value={relativeRangeEnd}
+                      onChange={(event) => setRelativeRangeEnd(event.target.value)}
+                      disabled={timelineMode !== "relative"}
+                      placeholder={platform === "billboard" ? "20" : "60"}
+                      className="min-w-0 rounded-[0.85rem] border border-white/10 bg-[#07100b] px-3 py-2 text-sm font-black text-[#f4fff7] outline-none transition placeholder:text-[#52635a] focus:border-[#1ed760]/70 disabled:cursor-not-allowed disabled:opacity-40"
+                      style={{ colorScheme: "dark" }}
+                    />
+                  </label>
+                </div>
+                <p className="mt-2 text-xs leading-5 text-[#8fa399]">
+                  只在相对时间轴生效；Billboard 按 Week，Spotify 按 Day。留空则显示全部。
+                </p>
+              </div>
+
+              <div>
                 <span className="mb-2 block text-sm font-semibold text-[#d6e7dc]">时间轴</span>
-                <div className="grid grid-cols-2 gap-2 rounded-[1.15rem] border border-white/10 bg-black/28 p-1">
+                <div className="grid grid-cols-2 gap-2 rounded-[1.15rem] border border-white/10 bg-[#050806] p-1">
                   {(["absolute", "relative"] as TimelineMode[]).map((value) => (
                     <button
                       key={value}
@@ -466,7 +562,7 @@ export default function Home() {
 
               <div>
                 <span className="mb-2 block text-sm font-semibold text-[#d6e7dc]">图表指标</span>
-                <div className="grid grid-cols-2 gap-2 rounded-[1.15rem] border border-white/10 bg-black/28 p-1">
+                <div className="grid grid-cols-2 gap-2 rounded-[1.15rem] border border-white/10 bg-[#050806] p-1">
                   {(["rank", "streams"] as ChartValueMode[]).map((value) => {
                     const disabled = platform === "billboard" && value === "streams";
                     return (
@@ -553,7 +649,7 @@ export default function Home() {
             platform={platform}
             timelineMode={timelineMode}
             valueMode={effectiveChartValueMode}
-            markers={activeChartMarkers}
+            markers={rangedChartMarkers}
           />
         </div>
       </div>
