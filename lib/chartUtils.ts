@@ -75,7 +75,7 @@ export function normalizeChartData(entries: ChartEntry[], filters: ChartFilters)
 }
 
 export function getTimelineBaseDate(work: Work, platform: Platform): string | undefined {
-  if (platform === "billboard" && work.release_date_source === "billboard_debut") {
+  if (platform === "billboard") {
     return work.first_chart_date || work.release_date;
   }
   return work.release_date || work.first_chart_date;
