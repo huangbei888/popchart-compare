@@ -25,7 +25,8 @@ type TrendChartProps = {
   markers: ChartMarker[];
 };
 
-const COLORS = ["#1ed760", "#f8d66d", "#8aa7ff", "#fb7185", "#7df2a1"];
+const COLORS = ["#1ed760", "#f8d66d", "#65a8ff", "#ff6b8a", "#39e6c2"];
+const LINE_SHADOWS = ["#1ed760", "#f8d66d", "#65a8ff", "#ff6b8a", "#39e6c2"];
 
 export default function TrendChart({
   data,
@@ -106,7 +107,11 @@ export default function TrendChart({
       </div>
       ) : null}
 
-      <div className={`${isExpanded ? "h-[calc(100vh-190px)] min-h-[560px]" : "h-[820px] min-h-[820px]"} w-full min-w-0`}>
+      <div
+        className={`${isExpanded ? "h-[calc(100vh-190px)] min-h-[560px]" : "h-[820px] min-h-[820px]"} relative w-full min-w-0 overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#050806] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]`}
+      >
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_25%_8%,rgba(30,215,96,0.16),transparent_28%),radial-gradient(circle_at_78%_0%,rgba(101,168,255,0.12),transparent_26%),linear-gradient(180deg,rgba(255,255,255,0.045),transparent_18%)]" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#1ed760]/70 to-transparent" />
         {!mounted ? (
           <div className="h-full rounded-[1.2rem] border border-white/10 bg-white/[0.03]" />
         ) : data.length === 0 || visibleWorks.length === 0 ? (
@@ -115,9 +120,36 @@ export default function TrendChart({
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%" minWidth={320} minHeight={320}>
-            <LineChart data={data} margin={{ top: 20, right: 36, left: 20, bottom: 18 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.075)" />
-              <XAxis dataKey="x" tick={{ fill: "#8fa399", fontSize: 12 }} minTickGap={24} />
+            <LineChart data={data} margin={{ top: 28, right: 42, left: 18, bottom: 24 }}>
+              <defs>
+                {visibleWorks.map((work, index) => {
+                  const shadow = LINE_SHADOWS[index % LINE_SHADOWS.length];
+                  return (
+                    <filter key={`${work.work_id}-glow`} id={`line-glow-${index}`} x="-40%" y="-40%" width="180%" height="180%">
+                      <feDropShadow dx="0" dy="0" stdDeviation="2.6" floodColor={shadow} floodOpacity="0.32" />
+                    </filter>
+                  );
+                })}
+                {visibleWorks.map((work, index) => {
+                  const color = COLORS[index % COLORS.length];
+                  return (
+                    <linearGradient key={`${work.work_id}-gradient`} id={`line-gradient-${index}`} x1="0" x2="1" y1="0" y2="0">
+                      <stop offset="0%" stopColor={color} stopOpacity="0.78" />
+                      <stop offset="48%" stopColor={color} stopOpacity="1" />
+                      <stop offset="100%" stopColor="#f4fff7" stopOpacity="0.92" />
+                    </linearGradient>
+                  );
+                })}
+              </defs>
+              <CartesianGrid strokeDasharray="1 10" vertical={false} stroke="rgba(255,255,255,0.09)" />
+              <XAxis
+                dataKey="x"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "#7f9188", fontSize: 12, fontWeight: 700 }}
+                minTickGap={24}
+                padding={{ left: 8, right: 8 }}
+              />
               <YAxis
                 type="number"
                 reversed={isRankMode}
@@ -127,16 +159,19 @@ export default function TrendChart({
                 tickFormatter={(value) =>
                   isRankMode ? `#${value}` : new Intl.NumberFormat("en", { notation: "compact" }).format(Number(value))
                 }
-                tick={{ fill: "#8fa399", fontSize: 12 }}
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "#8fa399", fontSize: 12, fontWeight: 800 }}
                 width={isRankMode ? 64 : 78}
               />
               <Tooltip
                 contentStyle={{
-                  background: "#0b100d",
-                  border: "1px solid rgba(30,215,96,0.22)",
-                  borderRadius: 16,
+                  background: "rgba(5,8,6,0.94)",
+                  border: "1px solid rgba(255,255,255,0.14)",
+                  borderRadius: 18,
                   color: "#f4fff7",
-                  boxShadow: "0 18px 60px rgba(0,0,0,0.45)",
+                  boxShadow: "0 24px 80px rgba(0,0,0,0.58), inset 0 1px 0 rgba(255,255,255,0.08)",
+                  backdropFilter: "blur(18px)",
                 }}
                 labelStyle={{ color: "#d6e7dc", marginBottom: 8 }}
                 formatter={(value, name) => {
@@ -162,10 +197,18 @@ export default function TrendChart({
                   type="monotone"
                   dataKey={work.work_id}
                   name={work.work_id}
-                  stroke={COLORS[index % COLORS.length]}
-                  strokeWidth={3.25}
-                  dot={{ r: 3, strokeWidth: 1, fill: COLORS[index % COLORS.length] }}
-                  activeDot={{ r: 6, strokeWidth: 2 }}
+                  stroke={`url(#line-gradient-${index})`}
+                  strokeWidth={3.85}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  filter={`url(#line-glow-${index})`}
+                  dot={false}
+                  activeDot={{
+                    r: 6.5,
+                    stroke: "#050806",
+                    strokeWidth: 3,
+                    fill: COLORS[index % COLORS.length],
+                  }}
                   connectNulls={false}
                   isAnimationActive={false}
                 />
@@ -175,15 +218,15 @@ export default function TrendChart({
                   key={`${marker.work_id}-${marker.type}-${marker.x}-${index}`}
                   x={marker.x}
                   y={marker.y}
-                  r={marker.type === "re" ? 7 : 8}
+                  r={marker.type === "re" ? 6.5 : 7.5}
                   fill={colorByWorkId.get(marker.work_id) ?? "#a1a1aa"}
-                  stroke={marker.type === "re" ? "#ffffff" : "#18181b"}
-                  strokeWidth={marker.type === "re" ? 2 : 3}
+                  stroke={marker.type === "re" ? "#f4fff7" : "#050806"}
+                  strokeWidth={marker.type === "re" ? 2.5 : 3.25}
                   label={{
                     value: marker.label,
                     position: marker.type === "re" ? "top" : "bottom",
                     fill: colorByWorkId.get(marker.work_id) ?? "#d4d8d4",
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: 800,
                   }}
                 />
