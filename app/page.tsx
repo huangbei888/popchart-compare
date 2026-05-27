@@ -93,6 +93,45 @@ function includeMarkerXPoints(
   return Array.from(byX.values()).sort((a, b) => Number(a.sortValue ?? 0) - Number(b.sortValue ?? 0));
 }
 
+function normalizeSearchText(value: string | undefined) {
+  return (value ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function stripArtistFeatures(value: string | undefined) {
+  return normalizeSearchText(value)
+    .replace(/\b(featuring|feat|ft|with)\b.*$/u, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function searchDedupeKey(work: Work) {
+  return `${stripArtistFeatures(work.artist)}__${normalizeSearchText(work.title)}`;
+}
+
+function workCompletenessScore(work: Work, index: WorkEntryIndex) {
+  const entryInfo = index[work.work_id];
+  const platformScore = (entryInfo?.platforms.length ?? 0) * 100000;
+  const regionScore = (entryInfo?.regions.length ?? 0) * 10000;
+  const entryScore = entryInfo?.entries ?? work.total_chart_entries ?? 0;
+  const coverScore = work.cover_url ? 1000 : 0;
+  const peakScore = work.peak_rank ? Math.max(0, 101 - work.peak_rank) : 0;
+  return platformScore + regionScore + entryScore + coverScore + peakScore;
+}
+
+function dedupeSearchCatalog(works: Work[], index: WorkEntryIndex) {
+  const bestByKey = new Map<string, Work>();
+
+  works.forEach((work) => {
+    const key = searchDedupeKey(work);
+    const current = bestByKey.get(key);
+    if (!current || workCompletenessScore(work, index) > workCompletenessScore(current, index)) {
+      bestByKey.set(key, work);
+    }
+  });
+
+  return Array.from(bestByKey.values());
+}
+
 export default function Home() {
   const [manualWorks, setManualWorks] = useState<Work[]>([]);
   const [billboardCatalog, setBillboardCatalog] = useState<Work[]>([]);
@@ -161,13 +200,19 @@ export default function Home() {
   );
   const spotifySearchCatalog = useMemo(() => {
     const source = spotifyCatalog.length > 0 ? spotifyCatalog : manualWorks;
-    return source.filter((work) => availableWorkIds.has(work.work_id));
-  }, [availableWorkIds, manualWorks, spotifyCatalog]);
+    return dedupeSearchCatalog(
+      source.filter((work) => availableWorkIds.has(work.work_id)),
+      workEntryIndex,
+    );
+  }, [availableWorkIds, manualWorks, spotifyCatalog, workEntryIndex]);
   const billboardSearchCatalog = useMemo(() => {
     const spotifyById = new Map(spotifyCatalog.map((work) => [work.work_id, work]));
     const source = catalogAvailable ? billboardWorks : manualWorks;
-    return source.map((work) => ({ ...spotifyById.get(work.work_id), ...work }));
-  }, [billboardWorks, catalogAvailable, manualWorks, spotifyCatalog]);
+    return dedupeSearchCatalog(
+      source.map((work) => ({ ...spotifyById.get(work.work_id), ...work })),
+      workEntryIndex,
+    );
+  }, [billboardWorks, catalogAvailable, manualWorks, spotifyCatalog, workEntryIndex]);
   const searchCatalog = platform === "spotify" ? spotifySearchCatalog : billboardSearchCatalog;
   const selectedWorks = useMemo(
     () => allWorks.filter((work) => selectedWorkIds.includes(work.work_id)),
