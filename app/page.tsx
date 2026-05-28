@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import AIChartAnalyst from "@/components/AIChartAnalyst";
 import ComparisonTable from "@/components/ComparisonTable";
 import CoverArt from "@/components/CoverArt";
 import CrossPlatformChart from "@/components/CrossPlatformChart";
@@ -79,7 +78,7 @@ function markerSortValue(x: string, timelineMode: TimelineMode) {
 
 function includeMarkerXPoints(
   data: Record<string, string | number | null>[],
-  markers: Array<{ x: string }>,
+  markers: Array<{ x: string; work_id: string; type: "re" | "out"; y: number }>,
   timelineMode: TimelineMode,
 ) {
   const byX = new Map(data.map((point) => [String(point.x), point]));
@@ -87,6 +86,12 @@ function includeMarkerXPoints(
   markers.forEach((marker) => {
     if (!byX.has(marker.x)) {
       byX.set(marker.x, { x: marker.x, sortValue: markerSortValue(marker.x, timelineMode) });
+    }
+    if (marker.type === "out") {
+      const point = byX.get(marker.x);
+      if (point && typeof point[marker.work_id] !== "number") {
+        point[marker.work_id] = marker.y;
+      }
     }
   });
 
@@ -662,18 +667,10 @@ export default function Home() {
         timelineMode={timelineMode}
       />
 
-      <AIChartAnalyst
-        metrics={metrics}
-        platform={platform}
-        region={effectiveRegion}
-        timelineMode={timelineMode}
-        valueMode={effectiveChartValueMode}
-      />
-
       <ComparisonTable metrics={metrics} selectedCount={selectedWorkIds.length} />
 
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 py-6 text-sm text-[#6f8178]">
-        <span>PopChart Compare 使用本地处理后的榜单数据。公开访问时 AI 分析会做限流和缓存。</span>
+        <span>PopChart Compare 使用本地处理后的榜单数据。</span>
         <a className="font-semibold text-[#9fffc0] hover:text-white" href="/privacy">
           隐私与数据说明
         </a>

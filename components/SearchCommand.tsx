@@ -82,7 +82,7 @@ export default function SearchCommand({
           setQuery(event.target.value);
           setLimitMessage(false);
         }}
-        placeholder="Search vampire, Taylor Swift, Espresso..."
+        placeholder="输入歌曲名称"
         className="w-full rounded-full border border-white/10 bg-[#050806] px-4 py-2.5 text-sm text-[#f4fff7] outline-none transition placeholder:text-[#6f8178] focus:border-[#1ed760]/70 focus:bg-[#07100b]"
         style={{ colorScheme: "dark" }}
       />

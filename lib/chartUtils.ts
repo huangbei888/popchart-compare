@@ -216,7 +216,7 @@ export function buildChartMarkers(
           work_id: workId,
           type: "out",
           x: getXValue(nextChartDate, work, timelineMode, platform, firstLocalEntryDate),
-          y: yMax,
+          y: row.rank ?? yMax,
           label: "Out",
         });
       }
@@ -228,7 +228,7 @@ export function buildChartMarkers(
         work_id: workId,
         type: "out",
         x: getXValue(latest.date, work, timelineMode, platform, firstLocalEntryDate),
-        y: yMax,
+        y: latest.rank ?? yMax,
         label: "Out",
       });
     }
