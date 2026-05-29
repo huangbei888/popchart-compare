@@ -170,21 +170,21 @@ export default function Home() {
   const [crossPlatformWorkId, setCrossPlatformWorkId] = useState<string | null>(null);
   const [platform, setPlatform] = useState<Platform>("billboard");
   const [region, setRegion] = useState("us");
-  const [timelineMode, setTimelineMode] = useState<TimelineMode>("absolute");
+  const [timelineMode, setTimelineMode] = useState<TimelineMode>("relative");
   const [relativeRangeStart, setRelativeRangeStart] = useState("");
   const [relativeRangeEnd, setRelativeRangeEnd] = useState("");
   const [chartValueMode, setChartValueMode] = useState<ChartValueMode>("rank");
   const [loadingCatalogs, setLoadingCatalogs] = useState(true);
+  const [loadingSpotifyCatalog, setLoadingSpotifyCatalog] = useState(false);
   const [loadingEntries, setLoadingEntries] = useState(false);
 
   useEffect(() => {
     let active = true;
 
     async function loadCatalogs() {
-      const [worksData, billboardCatalogData, spotifyCatalogData, entryIndexData, chartIndexData, manifestData] = await Promise.all([
+      const [worksData, billboardCatalogData, entryIndexData, chartIndexData, manifestData] = await Promise.all([
         fetchJson<Work[]>("/data/works.json", []),
         fetchJson<Work[]>("/data/billboard_catalog.json", []),
-        fetchJson<Work[]>("/data/spotify_catalog.json", []),
         fetchJson<WorkEntryIndex>("/data/work_entries_index.json", {}),
         fetchJson<ChartEntriesIndexItem[]>("/data/chart_entries_index.json", []),
         fetchJson<DataManifest>("/data/manifest.json", {}),
@@ -193,7 +193,6 @@ export default function Home() {
       if (!active) return;
       setManualWorks(worksData);
       setBillboardCatalog(billboardCatalogData);
-      setSpotifyCatalog(spotifyCatalogData);
       setWorkEntryIndex(entryIndexData);
       setChartEntriesIndex(chartIndexData);
       setDataManifest(manifestData);
@@ -205,6 +204,24 @@ export default function Home() {
       active = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (platform !== "spotify" || spotifyCatalog.length > 0 || loadingSpotifyCatalog) return;
+    let active = true;
+
+    async function loadSpotifyCatalog() {
+      setLoadingSpotifyCatalog(true);
+      const spotifyCatalogData = await fetchJson<Work[]>("/data/spotify_catalog.json", []);
+      if (!active) return;
+      setSpotifyCatalog(spotifyCatalogData);
+      setLoadingSpotifyCatalog(false);
+    }
+
+    loadSpotifyCatalog();
+    return () => {
+      active = false;
+    };
+  }, [loadingSpotifyCatalog, platform, spotifyCatalog.length]);
 
   const effectiveRegion = platform === "billboard" ? "us" : region;
   const catalogAvailable = billboardCatalog.length > 0;
@@ -409,7 +426,9 @@ export default function Home() {
               <span className="h-2.5 w-2.5 rounded-full bg-[#1ed760] shadow-[0_0_18px_rgba(30,215,96,0.8)]" />
             </div>
             <MetricBadge tone="green">
-              {loadingCatalogs || loadingEntries ? "数据加载中" : `${filteredEntries.length.toLocaleString()} 条已选记录`}
+              {loadingCatalogs || loadingEntries || loadingSpotifyCatalog
+                ? "数据加载中"
+                : `${filteredEntries.length.toLocaleString()} 条已选记录`}
             </MetricBadge>
             <MetricBadge tone={catalogAvailable ? "gold" : "gray"}>
               {catalogAvailable ? `${searchCatalog.length.toLocaleString()} 首可搜索歌曲` : "手动歌单模式"}
@@ -429,15 +448,19 @@ export default function Home() {
             catalog={searchCatalog}
             selectedWorkIds={selectedWorkIds}
             onAdd={addWork}
-            title={platform === "spotify" ? "搜索本地 Spotify 数据" : "搜索 Billboard 曲库"}
+            title={platform === "spotify" ? (loadingSpotifyCatalog ? "正在加载 Spotify 曲库" : "搜索本地 Spotify 数据") : "搜索 Billboard 曲库"}
             subtitle={
               platform === "spotify"
-                ? "这里只显示当前本地 Spotify 数据里有记录的歌曲。"
+                ? loadingSpotifyCatalog
+                  ? "Spotify 曲库会在切换到该平台时按需加载，避免首屏一次性下载过多数据。"
+                  : "这里只显示当前本地 Spotify 数据里有记录的歌曲。"
                 : "按歌名或艺人搜索，最多加入 5 首歌对比。"
             }
             badgeLabel={
               platform === "spotify"
-                ? `${searchCatalog.length.toLocaleString()} 首 Spotify 歌曲`
+                ? loadingSpotifyCatalog
+                  ? "加载中"
+                  : `${searchCatalog.length.toLocaleString()} 首 Spotify 歌曲`
                 : `${searchCatalog.length.toLocaleString()} 首 Hot 100 歌曲`
             }
           />

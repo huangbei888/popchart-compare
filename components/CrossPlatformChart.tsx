@@ -3,10 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import {
+  Area,
   CartesianGrid,
+  ComposedChart,
   Legend,
   Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -39,7 +40,7 @@ const SERIES: SeriesConfig[] = [
     key: "billboard_us",
     label: "Billboard Hot 100",
     shortLabel: "Billboard US",
-    color: "#1ed760",
+    color: "#8aaeb6",
     platform: "billboard",
     region: "us",
   },
@@ -47,7 +48,7 @@ const SERIES: SeriesConfig[] = [
     key: "spotify_global",
     label: "Spotify Global Top 200",
     shortLabel: "Spotify Global",
-    color: "#8aa7ff",
+    color: "#7c996b",
     platform: "spotify",
     region: "global",
   },
@@ -55,11 +56,17 @@ const SERIES: SeriesConfig[] = [
     key: "spotify_us",
     label: "Spotify US Top 200",
     shortLabel: "Spotify US",
-    color: "#f8d66d",
+    color: "#dfc44f",
     platform: "spotify",
     region: "us",
   },
 ];
+
+const AREA_COLORS: Record<string, string> = {
+  billboard_us: "#cfe1e2",
+  spotify_global: "#d8e5ce",
+  spotify_us: "#fff0a6",
+};
 
 const DEFAULT_SERIES_KEYS = SERIES.map((series) => series.key);
 
@@ -109,6 +116,13 @@ function countRows(entries: ChartEntry[], workId: string, series: SeriesConfig) 
 
 function hasSeriesData(data: Record<string, string | number | null>[], series: SeriesConfig) {
   return data.some((point) => typeof point[series.key] === "number");
+}
+
+function formatXAxisTick(value: string | number, timelineMode: TimelineMode) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return `${value}`;
+  if (timelineMode === "absolute") return dayjs(numeric).format("YYYY-MM-DD");
+  return `Day ${Math.round(numeric)}`;
 }
 
 export default function CrossPlatformChart({
@@ -237,22 +251,57 @@ export default function CrossPlatformChart({
         </div>
       </div>
 
-      <div className="h-[520px] min-h-[520px] w-full">
+      <div className="relative h-[620px] min-h-[620px] w-full overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#050806] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.055),transparent_21%),repeating-linear-gradient(0deg,rgba(255,255,255,0.025)_0_1px,transparent_1px_24px)]" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#1ed760]/65 to-transparent" />
         {!mounted ? (
           <div className="h-full rounded-[1.2rem] border border-white/10 bg-white/[0.03]" />
         ) : !activeWork || data.length === 0 || availableSeries.length === 0 ? (
-          <div className="flex h-full items-center justify-center rounded-[1.2rem] border border-dashed border-white/15 bg-white/[0.03] px-6 text-center text-sm text-[#8fa399]">
+          <div className="relative z-20 flex h-full items-center justify-center rounded-[1.2rem] border border-dashed border-white/15 bg-white/[0.03] px-6 text-center text-sm text-[#8fa399]">
             这首歌当前没有可用于跨平台对比的本地数据。换一首歌，或补齐 Spotify CSV 后再试。
           </div>
         ) : visibleSeries.length === 0 ? (
-          <div className="flex h-full items-center justify-center rounded-[1.2rem] border border-dashed border-white/15 bg-white/[0.03] px-6 text-center text-sm text-[#8fa399]">
+          <div className="relative z-20 flex h-full items-center justify-center rounded-[1.2rem] border border-dashed border-white/15 bg-white/[0.03] px-6 text-center text-sm text-[#8fa399]">
             至少保留一条平台线，才能绘制跨平台走势。
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%" minWidth={320} minHeight={320}>
-            <LineChart data={data} margin={{ top: 18, right: 34, left: 18, bottom: 18 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.075)" />
-              <XAxis dataKey="x" tick={{ fill: "#8fa399", fontSize: 12 }} minTickGap={22} />
+            <ComposedChart data={data} margin={{ top: 40, right: 42, left: 20, bottom: 30 }}>
+              <defs>
+                {SERIES.map((series) => (
+                  <linearGradient key={`${series.key}-area`} id={`cross-area-${series.key}`} x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stopColor={AREA_COLORS[series.key] ?? series.color} stopOpacity="0.48" />
+                    <stop offset="58%" stopColor={AREA_COLORS[series.key] ?? series.color} stopOpacity="0.2" />
+                    <stop offset="100%" stopColor={AREA_COLORS[series.key] ?? series.color} stopOpacity="0.02" />
+                  </linearGradient>
+                ))}
+                {SERIES.map((series) => (
+                  <filter key={`${series.key}-glow`} id={`cross-line-glow-${series.key}`} x="-40%" y="-40%" width="180%" height="180%">
+                    <feDropShadow dx="0" dy="2" stdDeviation="2.2" floodColor={series.color} floodOpacity="0.2" />
+                  </filter>
+                ))}
+              </defs>
+              <CartesianGrid strokeDasharray="2 12" vertical={false} stroke="rgba(255,255,255,0.08)" />
+              <XAxis
+                dataKey="sortValue"
+                type="number"
+                domain={["dataMin", "dataMax"]}
+                axisLine={{ stroke: "rgba(214,231,220,0.35)" }}
+                tickLine={false}
+                tick={{ fill: "#7f9188", fontSize: 12, fontWeight: 700 }}
+                tickFormatter={(value) => formatXAxisTick(value, timelineMode)}
+                height={56}
+                label={{
+                  value: "time",
+                  position: "insideBottom",
+                  offset: -2,
+                  fill: "#8fa399",
+                  fontFamily: "Georgia, serif",
+                  fontSize: 18,
+                  fontWeight: 700,
+                }}
+                minTickGap={22}
+              />
               <YAxis
                 type="number"
                 reversed
@@ -260,27 +309,57 @@ export default function CrossPlatformChart({
                 domain={[1, 200]}
                 ticks={[1, 10, 50, 100, 200]}
                 tickFormatter={(value) => `#${value}`}
-                tick={{ fill: "#8fa399", fontSize: 12 }}
-                width={64}
+                axisLine={{ stroke: "rgba(214,231,220,0.35)" }}
+                tickLine={false}
+                tick={{ fill: "#8fa399", fontSize: 12, fontWeight: 800 }}
+                label={{
+                  value: "rank value",
+                  angle: -90,
+                  position: "insideLeft",
+                  offset: 0,
+                  fill: "#8fa399",
+                  fontFamily: "Georgia, serif",
+                  fontSize: 14,
+                  fontWeight: 700,
+                }}
+                width={72}
               />
               <Tooltip
                 contentStyle={{
-                  background: "#0b100d",
-                  border: "1px solid rgba(30,215,96,0.22)",
-                  borderRadius: 16,
+                  background: "rgba(5,8,6,0.94)",
+                  border: "1px solid rgba(255,255,255,0.14)",
+                  borderRadius: 14,
                   color: "#f4fff7",
-                  boxShadow: "0 18px 60px rgba(0,0,0,0.45)",
+                  boxShadow: "0 24px 80px rgba(0,0,0,0.58), inset 0 1px 0 rgba(255,255,255,0.08)",
+                  backdropFilter: "blur(18px)",
                 }}
                 labelStyle={{ color: "#d6e7dc", marginBottom: 8 }}
                 formatter={(value, name) => {
                   const series = SERIES.find((item) => item.key === name);
                   return [`#${value}`, series?.label ?? name];
                 }}
+                labelFormatter={(label) => formatXAxisTick(label, timelineMode)}
               />
               <Legend
-                wrapperStyle={{ color: "#d6e7dc", paddingTop: 12 }}
+                iconType="rect"
+                wrapperStyle={{ color: "#d6e7dc", paddingTop: 16, fontFamily: "Georgia, serif", fontWeight: 600 }}
                 formatter={(value) => SERIES.find((item) => item.key === value)?.label ?? value}
               />
+              {visibleSeries.map((series) => (
+                <Area
+                  key={`${series.key}-area`}
+                  type="monotone"
+                  dataKey={series.key}
+                  fill={`url(#cross-area-${series.key})`}
+                  stroke="none"
+                  baseValue={200}
+                  legendType="none"
+                  dot={false}
+                  activeDot={false}
+                  connectNulls={false}
+                  isAnimationActive={false}
+                />
+              ))}
               {visibleSeries.map((series) => (
                 <Line
                   key={series.key}
@@ -288,14 +367,17 @@ export default function CrossPlatformChart({
                   dataKey={series.key}
                   name={series.key}
                   stroke={series.color}
-                  strokeWidth={3.25}
-                  dot={{ r: 3, strokeWidth: 1, fill: series.color }}
-                  activeDot={{ r: 6 }}
+                  strokeWidth={3.1}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  filter={`url(#cross-line-glow-${series.key})`}
+                  dot={false}
+                  activeDot={{ r: 5.8, stroke: "#050806", strokeWidth: 2.5, fill: series.color }}
                   connectNulls={false}
                   isAnimationActive={false}
                 />
               ))}
-            </LineChart>
+            </ComposedChart>
           </ResponsiveContainer>
         )}
       </div>
