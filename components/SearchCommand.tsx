@@ -14,6 +14,9 @@ type SearchCommandProps = {
   title?: string;
   subtitle?: string;
   badgeLabel?: string;
+  emptyMessage?: string;
+  isLoading?: boolean;
+  onPrimeCatalog?: () => void;
 };
 
 const dash = "—";
@@ -27,6 +30,9 @@ export default function SearchCommand({
   title = "Search catalog",
   subtitle = "Search by song or artist, then add up to 5 tracks.",
   badgeLabel,
+  emptyMessage,
+  isLoading = false,
+  onPrimeCatalog,
 }: SearchCommandProps) {
   const [query, setQuery] = useState("");
   const [limitMessage, setLimitMessage] = useState(false);
@@ -78,7 +84,9 @@ export default function SearchCommand({
       <input
         value={query}
         autoComplete="off"
+        onFocus={onPrimeCatalog}
         onChange={(event) => {
+          onPrimeCatalog?.();
           setQuery(event.target.value);
           setLimitMessage(false);
         }}
@@ -94,9 +102,13 @@ export default function SearchCommand({
       ) : null}
 
       <div className="mt-3 grid gap-2">
-        {results.length === 0 ? (
+        {isLoading ? (
           <div className="rounded-[1.25rem] border border-white/10 bg-black/24 px-4 py-8 text-center text-sm text-[#8fa399]">
-            当前本地数据集中没有搜到匹配歌曲。
+            正在加载曲库，马上就好。
+          </div>
+        ) : results.length === 0 ? (
+          <div className="rounded-[1.25rem] border border-white/10 bg-black/24 px-4 py-8 text-center text-sm text-[#8fa399]">
+            {emptyMessage ?? "当前本地数据集中没有搜到匹配歌曲。"}
           </div>
         ) : (
           results.map((work) => (

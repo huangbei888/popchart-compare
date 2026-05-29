@@ -144,7 +144,7 @@ def write_public_chart_index(entries: list[dict]) -> None:
     )
 
 
-def write_public_work_entry_shards(entries: list[dict]) -> None:
+def write_public_work_entry_shards(entries: list[dict]) -> dict[str, dict]:
     PUBLIC_WORK_ENTRIES_DIR.mkdir(parents=True, exist_ok=True)
     for path in PUBLIC_WORK_ENTRIES_DIR.glob("*.json"):
         path.unlink()
@@ -172,6 +172,43 @@ def write_public_work_entry_shards(entries: list[dict]) -> None:
         json.dumps(index, ensure_ascii=False),
         encoding="utf-8",
     )
+
+    return index
+
+
+def build_search_catalog(catalog: list[dict], entry_index: dict[str, dict]) -> list[dict]:
+    fields = [
+        "work_id",
+        "type",
+        "title",
+        "artist",
+        "release_date",
+        "release_date_source",
+        "spotify_id",
+        "spotify_url",
+        "cover_url",
+        "album_name",
+        "first_chart_date",
+        "latest_chart_date",
+        "peak_rank",
+        "debut_rank",
+        "total_chart_entries",
+        "weeks_at_number_one",
+        "weeks_in_top_10",
+        "best_weeks_on_chart",
+    ]
+    rows = []
+    for work in catalog:
+        info = entry_index.get(work.get("work_id", ""))
+        if not info:
+            continue
+        compact = {key: work[key] for key in fields if key in work and work[key] not in ("", None)}
+        compact["entry_file"] = info["file"]
+        compact["entry_count"] = info["entries"]
+        compact["platforms"] = info["platforms"]
+        compact["regions"] = info["regions"]
+        rows.append(compact)
+    return rows
 
 
 def build_manifest(entries: list[dict]) -> dict:
@@ -249,7 +286,7 @@ def main() -> None:
     (PUBLIC_DATA_DIR / "works.json").write_text(json.dumps(works, ensure_ascii=False, indent=2), encoding="utf-8")
     remove_public_entry_shards()
     write_public_chart_index(entries)
-    write_public_work_entry_shards(entries)
+    entry_index = write_public_work_entry_shards(entries)
     manifest = build_manifest(entries)
     MANIFEST_JSON_PATH.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     (PUBLIC_DATA_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -259,12 +296,20 @@ def main() -> None:
         catalog = apply_overrides(json.loads(catalog_path.read_text(encoding="utf-8")), cover_overrides)
         catalog_path.write_text(json.dumps(catalog, ensure_ascii=False, indent=2), encoding="utf-8")
         (PUBLIC_DATA_DIR / "billboard_catalog.json").write_text(json.dumps(catalog, ensure_ascii=False, indent=2), encoding="utf-8")
+        (PUBLIC_DATA_DIR / "billboard_search_catalog.json").write_text(
+            json.dumps(build_search_catalog(catalog, entry_index), ensure_ascii=False),
+            encoding="utf-8",
+        )
 
     if SPOTIFY_CATALOG_PATH.exists():
         spotify_catalog = apply_overrides(json.loads(SPOTIFY_CATALOG_PATH.read_text(encoding="utf-8")), cover_overrides)
         SPOTIFY_CATALOG_PATH.write_text(json.dumps(spotify_catalog, ensure_ascii=False, indent=2), encoding="utf-8")
         (PUBLIC_DATA_DIR / "spotify_catalog.json").write_text(
             json.dumps(spotify_catalog, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        (PUBLIC_DATA_DIR / "spotify_search_catalog.json").write_text(
+            json.dumps(build_search_catalog(spotify_catalog, entry_index), ensure_ascii=False),
             encoding="utf-8",
         )
 

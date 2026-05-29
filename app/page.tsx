@@ -20,16 +20,6 @@ import {
 } from "@/lib/chartUtils";
 import type { ChartEntry, ChartValueMode, Platform, TimelineMode, Work } from "@/lib/types";
 
-type WorkEntryIndex = Record<
-  string,
-  {
-    file: string;
-    entries: number;
-    platforms: Platform[];
-    regions: string[];
-  }
->;
-
 type ChartEntriesIndexItem = {
   platform: Platform;
   region: string;
@@ -45,9 +35,16 @@ type DataManifest = {
   spotify_latest_dates?: Record<string, string>;
 };
 
+type CatalogWork = Work & {
+  entry_file?: string;
+  entry_count?: number;
+  platforms?: Platform[];
+  regions?: string[];
+};
+
 async function fetchJson<T>(url: string, fallback: T): Promise<T> {
   try {
-    const response = await fetch(url, { cache: "no-store" });
+    const response = await fetch(url);
     if (!response.ok) return fallback;
     return (await response.json()) as T;
   } catch {
@@ -134,23 +131,22 @@ function searchDedupeKey(work: Work) {
   return `${stripArtistFeatures(work.artist)}__${normalizeSearchText(work.title)}`;
 }
 
-function workCompletenessScore(work: Work, index: WorkEntryIndex) {
-  const entryInfo = index[work.work_id];
-  const platformScore = (entryInfo?.platforms.length ?? 0) * 100000;
-  const regionScore = (entryInfo?.regions.length ?? 0) * 10000;
-  const entryScore = entryInfo?.entries ?? work.total_chart_entries ?? 0;
+function workCompletenessScore(work: CatalogWork) {
+  const platformScore = (work.platforms?.length ?? 0) * 100000;
+  const regionScore = (work.regions?.length ?? 0) * 10000;
+  const entryScore = work.entry_count ?? work.total_chart_entries ?? 0;
   const coverScore = work.cover_url ? 1000 : 0;
   const peakScore = work.peak_rank ? Math.max(0, 101 - work.peak_rank) : 0;
   return platformScore + regionScore + entryScore + coverScore + peakScore;
 }
 
-function dedupeSearchCatalog(works: Work[], index: WorkEntryIndex) {
-  const bestByKey = new Map<string, Work>();
+function dedupeSearchCatalog(works: CatalogWork[]) {
+  const bestByKey = new Map<string, CatalogWork>();
 
   works.forEach((work) => {
     const key = searchDedupeKey(work);
     const current = bestByKey.get(key);
-    if (!current || workCompletenessScore(work, index) > workCompletenessScore(current, index)) {
+    if (!current || workCompletenessScore(work) > workCompletenessScore(current)) {
       bestByKey.set(key, work);
     }
   });
@@ -158,11 +154,14 @@ function dedupeSearchCatalog(works: Work[], index: WorkEntryIndex) {
   return Array.from(bestByKey.values());
 }
 
+function hasPlatformRegion(work: CatalogWork, platform: Platform, region: string) {
+  return Boolean(work.platforms?.includes(platform) && work.regions?.includes(region));
+}
+
 export default function Home() {
-  const [manualWorks, setManualWorks] = useState<Work[]>([]);
-  const [billboardCatalog, setBillboardCatalog] = useState<Work[]>([]);
-  const [spotifyCatalog, setSpotifyCatalog] = useState<Work[]>([]);
-  const [workEntryIndex, setWorkEntryIndex] = useState<WorkEntryIndex>({});
+  const [manualWorks, setManualWorks] = useState<CatalogWork[]>([]);
+  const [billboardCatalog, setBillboardCatalog] = useState<CatalogWork[]>([]);
+  const [spotifyCatalog, setSpotifyCatalog] = useState<CatalogWork[]>([]);
   const [chartEntriesIndex, setChartEntriesIndex] = useState<ChartEntriesIndexItem[]>([]);
   const [dataManifest, setDataManifest] = useState<DataManifest>({});
   const [chartEntries, setChartEntries] = useState<ChartEntry[]>([]);
@@ -175,6 +174,7 @@ export default function Home() {
   const [relativeRangeEnd, setRelativeRangeEnd] = useState("");
   const [chartValueMode, setChartValueMode] = useState<ChartValueMode>("rank");
   const [loadingCatalogs, setLoadingCatalogs] = useState(true);
+  const [loadingBillboardCatalog, setLoadingBillboardCatalog] = useState(false);
   const [loadingSpotifyCatalog, setLoadingSpotifyCatalog] = useState(false);
   const [loadingEntries, setLoadingEntries] = useState(false);
 
@@ -182,18 +182,14 @@ export default function Home() {
     let active = true;
 
     async function loadCatalogs() {
-      const [worksData, billboardCatalogData, entryIndexData, chartIndexData, manifestData] = await Promise.all([
-        fetchJson<Work[]>("/data/works.json", []),
-        fetchJson<Work[]>("/data/billboard_catalog.json", []),
-        fetchJson<WorkEntryIndex>("/data/work_entries_index.json", {}),
+      const [worksData, chartIndexData, manifestData] = await Promise.all([
+        fetchJson<CatalogWork[]>("/data/works.json", []),
         fetchJson<ChartEntriesIndexItem[]>("/data/chart_entries_index.json", []),
         fetchJson<DataManifest>("/data/manifest.json", {}),
       ]);
 
       if (!active) return;
       setManualWorks(worksData);
-      setBillboardCatalog(billboardCatalogData);
-      setWorkEntryIndex(entryIndexData);
       setChartEntriesIndex(chartIndexData);
       setDataManifest(manifestData);
       setLoadingCatalogs(false);
@@ -211,7 +207,7 @@ export default function Home() {
 
     async function loadSpotifyCatalog() {
       setLoadingSpotifyCatalog(true);
-      const spotifyCatalogData = await fetchJson<Work[]>("/data/spotify_catalog.json", []);
+      const spotifyCatalogData = await fetchJson<CatalogWork[]>("/data/spotify_search_catalog.json", []);
       if (!active) return;
       setSpotifyCatalog(spotifyCatalogData);
       setLoadingSpotifyCatalog(false);
@@ -223,41 +219,50 @@ export default function Home() {
     };
   }, [loadingSpotifyCatalog, platform, spotifyCatalog.length]);
 
+  const primeSearchCatalog = () => {
+    if (platform === "billboard") {
+      if (billboardCatalog.length > 0 || loadingBillboardCatalog) return;
+      setLoadingBillboardCatalog(true);
+      fetchJson<CatalogWork[]>("/data/billboard_search_catalog.json", []).then((catalog) => {
+        setBillboardCatalog(catalog);
+        setLoadingBillboardCatalog(false);
+      });
+      return;
+    }
+
+    if (spotifyCatalog.length > 0 || loadingSpotifyCatalog) return;
+    setLoadingSpotifyCatalog(true);
+    fetchJson<CatalogWork[]>("/data/spotify_search_catalog.json", []).then((catalog) => {
+      setSpotifyCatalog(catalog);
+      setLoadingSpotifyCatalog(false);
+    });
+  };
+
   const effectiveRegion = platform === "billboard" ? "us" : region;
-  const catalogAvailable = billboardCatalog.length > 0;
+  const activeCatalogLoading = platform === "billboard" ? loadingBillboardCatalog : loadingSpotifyCatalog;
+  const activeCatalogLoaded = platform === "billboard" ? billboardCatalog.length > 0 : spotifyCatalog.length > 0;
 
   const allWorks = useMemo(
-    () => mergeWorks(mergeWorks(catalogAvailable ? billboardCatalog : [], spotifyCatalog), manualWorks),
-    [billboardCatalog, catalogAvailable, manualWorks, spotifyCatalog],
+    () => mergeWorks(mergeWorks(billboardCatalog, spotifyCatalog), manualWorks),
+    [billboardCatalog, manualWorks, spotifyCatalog],
   );
   const billboardWorks = useMemo(
-    () => mergeWorks(catalogAvailable ? billboardCatalog : [], manualWorks),
-    [billboardCatalog, catalogAvailable, manualWorks],
-  );
-  const availableWorkIds = useMemo(
-    () =>
-      new Set(
-        Object.entries(workEntryIndex)
-          .filter(([, item]) => item.platforms.includes(platform) && item.regions.includes(effectiveRegion))
-          .map(([workId]) => workId),
-      ),
-    [effectiveRegion, platform, workEntryIndex],
+    () => mergeWorks(billboardCatalog, manualWorks),
+    [billboardCatalog, manualWorks],
   );
   const spotifySearchCatalog = useMemo(() => {
     const source = spotifyCatalog.length > 0 ? spotifyCatalog : manualWorks;
-    return dedupeSearchCatalog(
-      source.filter((work) => availableWorkIds.has(work.work_id)),
-      workEntryIndex,
-    );
-  }, [availableWorkIds, manualWorks, spotifyCatalog, workEntryIndex]);
+    return dedupeSearchCatalog(source.filter((work) => hasPlatformRegion(work, "spotify", effectiveRegion)));
+  }, [effectiveRegion, manualWorks, spotifyCatalog]);
   const billboardSearchCatalog = useMemo(() => {
     const spotifyById = new Map(spotifyCatalog.map((work) => [work.work_id, work]));
-    const source = catalogAvailable ? billboardWorks : manualWorks;
+    const source = billboardWorks;
     return dedupeSearchCatalog(
-      source.map((work) => ({ ...spotifyById.get(work.work_id), ...work })),
-      workEntryIndex,
+      source
+        .map((work) => ({ ...spotifyById.get(work.work_id), ...work }))
+        .filter((work) => hasPlatformRegion(work, "billboard", "us")),
     );
-  }, [billboardWorks, catalogAvailable, manualWorks, spotifyCatalog, workEntryIndex]);
+  }, [billboardWorks, spotifyCatalog]);
   const searchCatalog = platform === "spotify" ? spotifySearchCatalog : billboardSearchCatalog;
   const selectedWorks = useMemo(
     () => allWorks.filter((work) => selectedWorkIds.includes(work.work_id)),
@@ -285,7 +290,7 @@ export default function Home() {
       setLoadingEntries(true);
       const chunks = await Promise.all(
         selectedWorkIds.map((workId) => {
-          const file = workEntryIndex[workId]?.file;
+          const file = (allWorks.find((work) => work.work_id === workId) as CatalogWork | undefined)?.entry_file;
           return file ? fetchJson<ChartEntry[]>(file, []) : Promise.resolve([]);
         }),
       );
@@ -299,7 +304,7 @@ export default function Home() {
     return () => {
       active = false;
     };
-  }, [selectedWorkIds, workEntryIndex]);
+  }, [allWorks, selectedWorkIds]);
 
   const activeChartIndex = useMemo(
     () => chartEntriesIndex.find((item) => item.platform === platform && item.region === effectiveRegion),
@@ -426,12 +431,12 @@ export default function Home() {
               <span className="h-2.5 w-2.5 rounded-full bg-[#1ed760] shadow-[0_0_18px_rgba(30,215,96,0.8)]" />
             </div>
             <MetricBadge tone="green">
-              {loadingCatalogs || loadingEntries || loadingSpotifyCatalog
+              {loadingCatalogs || loadingEntries || activeCatalogLoading
                 ? "数据加载中"
                 : `${filteredEntries.length.toLocaleString()} 条已选记录`}
             </MetricBadge>
-            <MetricBadge tone={catalogAvailable ? "gold" : "gray"}>
-              {catalogAvailable ? `${searchCatalog.length.toLocaleString()} 首可搜索歌曲` : "手动歌单模式"}
+            <MetricBadge tone={activeCatalogLoaded ? "gold" : "gray"}>
+              {activeCatalogLoaded ? `${searchCatalog.length.toLocaleString()} 首可搜索歌曲` : "点搜索框加载曲库"}
             </MetricBadge>
             {dataManifest.spotify_latest_dates?.global || dataManifest.spotify_latest_dates?.us ? (
               <MetricBadge tone="blue">
@@ -448,21 +453,22 @@ export default function Home() {
             catalog={searchCatalog}
             selectedWorkIds={selectedWorkIds}
             onAdd={addWork}
-            title={platform === "spotify" ? (loadingSpotifyCatalog ? "正在加载 Spotify 曲库" : "搜索本地 Spotify 数据") : "搜索 Billboard 曲库"}
+            title={activeCatalogLoading ? "正在加载曲库" : "搜索歌曲"}
             subtitle={
-              platform === "spotify"
-                ? loadingSpotifyCatalog
-                  ? "Spotify 曲库会在切换到该平台时按需加载，避免首屏一次性下载过多数据。"
-                  : "这里只显示当前本地 Spotify 数据里有记录的歌曲。"
-                : "按歌名或艺人搜索，最多加入 5 首歌对比。"
+              activeCatalogLoaded
+                ? "按歌名或艺人搜索，加入后才会加载这首歌的排行数据。"
+                : "点击输入框后加载搜索目录；页面不会在首屏下载完整排行数据。"
             }
             badgeLabel={
-              platform === "spotify"
-                ? loadingSpotifyCatalog
-                  ? "加载中"
-                  : `${searchCatalog.length.toLocaleString()} 首 Spotify 歌曲`
-                : `${searchCatalog.length.toLocaleString()} 首 Hot 100 歌曲`
+              activeCatalogLoading
+                ? "加载中"
+                : activeCatalogLoaded
+                  ? `${searchCatalog.length.toLocaleString()} 首可搜索歌曲`
+                  : "按需加载"
             }
+            emptyMessage={activeCatalogLoaded ? undefined : "点击输入框开始加载曲库。"}
+            isLoading={activeCatalogLoading}
+            onPrimeCatalog={primeSearchCatalog}
           />
 
           <section className="stage-panel rounded-[1.6rem] p-5">
