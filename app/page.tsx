@@ -42,9 +42,17 @@ type CatalogWork = Work & {
   regions?: string[];
 };
 
+const DATA_BASE_URL = (process.env.NEXT_PUBLIC_DATA_BASE_URL ?? "").replace(/\/+$/, "");
+
+function dataUrl(path: string) {
+  if (/^https?:\/\//i.test(path)) return path;
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return DATA_BASE_URL ? `${DATA_BASE_URL}${normalizedPath}` : normalizedPath;
+}
+
 async function fetchJson<T>(url: string, fallback: T): Promise<T> {
   try {
-    const response = await fetch(url);
+    const response = await fetch(dataUrl(url));
     if (!response.ok) return fallback;
     return (await response.json()) as T;
   } catch {
