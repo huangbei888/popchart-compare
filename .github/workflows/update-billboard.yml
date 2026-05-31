@@ -62,21 +62,30 @@ jobs:
           endpoint=$OSS_ENDPOINT
           EOF
 
-      - name: Download latest Billboard source data
+      - name: Download latest Billboard recent chart
         run: |
           mkdir -p data/raw/billboard
           curl -L --fail --retry 3 \
-            -o data/raw/billboard/all.json \
-            https://raw.githubusercontent.com/mhollingshead/billboard-hot-100/main/all.json
+            -o data/raw/billboard/recent.json \
+            https://raw.githubusercontent.com/mhollingshead/billboard-hot-100/main/recent.json
 
-      - name: Rebuild Billboard and public data
+      - name: Update Billboard public data
         run: |
-          python scripts/build_billboard_catalog.py
-          python scripts/build_all.py
+          npm run billboard:update:recent -- --recent data/raw/billboard/recent.json
           npm run build
 
-      - name: Sync public data to OSS
-        run: ossutil cp -r public/data "oss://$OSS_BUCKET/data" --update
+      - name: Sync changed public data to OSS
+        run: |
+          {
+            git diff --name-only -- public/data
+            git ls-files --others --exclude-standard -- public/data
+          } | sort -u > changed-public-data.txt
+          if [ ! -s changed-public-data.txt ]; then
+            echo "No public data changes to sync."
+            exit 0
+          fi
+          sed 's#^public/data/##' changed-public-data.txt > oss-public-files.txt
+          ossutil cp public/data "oss://$OSS_BUCKET/data" -r --files-from oss-public-files.txt -j 10 --update --force
 
       - name: Commit updated data snapshot
         run: |

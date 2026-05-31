@@ -11,7 +11,8 @@
     "spotify:download": "node scripts/download_spotify_official.mjs",
     "spotify:download:range": "node scripts/download_spotify_range.mjs",
     "spotify:update:latest": "node scripts/update_spotify_latest.mjs",
-    "spotify:export-state": "node scripts/export_spotify_storage_state.mjs"
+    "spotify:export-state": "node scripts/export_spotify_storage_state.mjs",
+    "billboard:update:recent": "python scripts/update_billboard_recent.py"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

@@ -88,6 +88,7 @@ jobs:
         run: |
           mkdir -p data/raw/spotify/official
           ossutil cp -r "oss://$OSS_BUCKET/raw/spotify" data/raw/spotify/official --update || true
+          find data/raw/spotify/official -type f -name "*.csv" | sort > spotify-raw-before.txt
 
       - name: Download latest Spotify charts and rebuild public data
         run: |
@@ -100,10 +101,27 @@ jobs:
           fi
           npm run spotify:update:latest -- --regions global,us --lag-days 2 --chunk-days 2 --headless --storage-state spotify-storage-state.json --verify-build $EXTRA_ARGS
 
-      - name: Sync Spotify raw CSVs and public data to OSS
+      - name: Sync changed Spotify raw CSVs and public data to OSS
         run: |
-          ossutil cp -r data/raw/spotify/official "oss://$OSS_BUCKET/raw/spotify" --update
-          ossutil cp -r public/data "oss://$OSS_BUCKET/data" --update
+          find data/raw/spotify/official -type f -name "*.csv" | sort > spotify-raw-after.txt
+          comm -13 spotify-raw-before.txt spotify-raw-after.txt \
+            | sed 's#^data/raw/spotify/official/##' > spotify-raw-new-files.txt
+          if [ -s spotify-raw-new-files.txt ]; then
+            ossutil cp data/raw/spotify/official "oss://$OSS_BUCKET/raw/spotify" -r --files-from spotify-raw-new-files.txt -j 10 --update --force
+          else
+            echo "No new Spotify raw CSVs to sync."
+          fi
+
+          {
+            git diff --name-only -- public/data
+            git ls-files --others --exclude-standard -- public/data
+          } | sort -u > changed-public-data.txt
+          if [ ! -s changed-public-data.txt ]; then
+            echo "No public data changes to sync."
+            exit 0
+          fi
+          sed 's#^public/data/##' changed-public-data.txt > oss-public-files.txt
+          ossutil cp public/data "oss://$OSS_BUCKET/data" -r --files-from oss-public-files.txt -j 10 --update --force
 
       - name: Commit updated data snapshot
         run: |
