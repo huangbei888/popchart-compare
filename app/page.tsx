@@ -210,22 +210,23 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (platform !== "spotify" || spotifyCatalog.length > 0 || loadingSpotifyCatalog) return;
+    if (platform !== "spotify" || spotifyCatalog.length > 0) return;
     let active = true;
 
     async function loadSpotifyCatalog() {
       setLoadingSpotifyCatalog(true);
       const spotifyCatalogData = await fetchJson<CatalogWork[]>("/data/spotify_search_catalog.json", []);
-      if (!active) return;
-      setSpotifyCatalog(spotifyCatalogData);
-      setLoadingSpotifyCatalog(false);
+      if (active) {
+        setSpotifyCatalog(spotifyCatalogData);
+        setLoadingSpotifyCatalog(false);
+      }
     }
 
     loadSpotifyCatalog();
     return () => {
       active = false;
     };
-  }, [loadingSpotifyCatalog, platform, spotifyCatalog.length]);
+  }, [platform, spotifyCatalog.length]);
 
   const primeSearchCatalog = () => {
     if (platform === "billboard") {
@@ -233,6 +234,7 @@ export default function Home() {
       setLoadingBillboardCatalog(true);
       fetchJson<CatalogWork[]>("/data/billboard_search_catalog.json", []).then((catalog) => {
         setBillboardCatalog(catalog);
+      }).finally(() => {
         setLoadingBillboardCatalog(false);
       });
       return;
@@ -242,6 +244,7 @@ export default function Home() {
     setLoadingSpotifyCatalog(true);
     fetchJson<CatalogWork[]>("/data/spotify_search_catalog.json", []).then((catalog) => {
       setSpotifyCatalog(catalog);
+    }).finally(() => {
       setLoadingSpotifyCatalog(false);
     });
   };
