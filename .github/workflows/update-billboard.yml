@@ -1,0 +1,91 @@
+name: Update Billboard chart data
+
+on:
+  schedule:
+    # Billboard Hot 100 is weekly; this runs Wednesday afternoon China time.
+    - cron: "30 8 * * 3"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  OSS_BUCKET: popchart-data-huangbei
+  OSS_REGION: cn-hongkong
+  OSS_ENDPOINT: oss-cn-hongkong.aliyuncs.com
+
+jobs:
+  update-billboard:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: billboard-data-update
+      cancel-in-progress: false
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install ossutil
+        run: |
+          curl -L -o ossutil.zip https://gosspublic.alicdn.com/ossutil/v2/2.3.0/ossutil-2.3.0-linux-amd64.zip
+          unzip -q ossutil.zip
+          sudo install -m 755 ossutil-2.3.0-linux-amd64/ossutil /usr/local/bin/ossutil
+
+      - name: Configure OSS credentials
+        env:
+          ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        run: |
+          if [ -z "$ALIYUN_ACCESS_KEY_ID" ] || [ -z "$ALIYUN_ACCESS_KEY_SECRET" ]; then
+            echo "::error::Missing ALIYUN_ACCESS_KEY_ID or ALIYUN_ACCESS_KEY_SECRET repository secret."
+            exit 1
+          fi
+          cat > "$HOME/.ossutilconfig" <<EOF
+          [default]
+          accessKeyID=$ALIYUN_ACCESS_KEY_ID
+          accessKeySecret=$ALIYUN_ACCESS_KEY_SECRET
+          region=$OSS_REGION
+          endpoint=$OSS_ENDPOINT
+          EOF
+
+      - name: Download latest Billboard source data
+        run: |
+          mkdir -p data/raw/billboard
+          curl -L --fail --retry 3 \
+            -o data/raw/billboard/all.json \
+            https://raw.githubusercontent.com/mhollingshead/billboard-hot-100/main/all.json
+
+      - name: Rebuild Billboard and public data
+        run: |
+          python scripts/build_billboard_catalog.py
+          python scripts/build_all.py
+          npm run build
+
+      - name: Sync public data to OSS
+        run: ossutil cp -r public/data "oss://$OSS_BUCKET/data" --update
+
+      - name: Commit updated data snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data
+          if git diff --cached --quiet; then
+            echo "No Billboard data changes to commit."
+          else
+            git commit -m "chore(data): update billboard charts"
+            git push
+          fi

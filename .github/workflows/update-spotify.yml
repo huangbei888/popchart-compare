@@ -18,6 +18,11 @@ on:
 permissions:
   contents: write
 
+env:
+  OSS_BUCKET: popchart-data-huangbei
+  OSS_REGION: cn-hongkong
+  OSS_ENDPOINT: oss-cn-hongkong.aliyuncs.com
+
 jobs:
   update-spotify:
     runs-on: ubuntu-latest
@@ -43,6 +48,34 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install ossutil
+        run: |
+          curl -L -o ossutil.zip https://gosspublic.alicdn.com/ossutil/v2/2.3.0/ossutil-2.3.0-linux-amd64.zip
+          unzip -q ossutil.zip
+          sudo install -m 755 ossutil-2.3.0-linux-amd64/ossutil /usr/local/bin/ossutil
+
+      - name: Configure OSS credentials
+        env:
+          ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        run: |
+          if [ -z "$ALIYUN_ACCESS_KEY_ID" ] || [ -z "$ALIYUN_ACCESS_KEY_SECRET" ]; then
+            echo "::error::Missing ALIYUN_ACCESS_KEY_ID or ALIYUN_ACCESS_KEY_SECRET repository secret."
+            exit 1
+          fi
+          cat > "$HOME/.ossutilconfig" <<EOF
+          [default]
+          accessKeyID=$ALIYUN_ACCESS_KEY_ID
+          accessKeySecret=$ALIYUN_ACCESS_KEY_SECRET
+          region=$OSS_REGION
+          endpoint=$OSS_ENDPOINT
+          EOF
+
+      - name: Restore cached Spotify raw CSVs from OSS
+        run: |
+          mkdir -p data/raw/spotify/official
+          ossutil cp -r "oss://$OSS_BUCKET/raw/spotify" data/raw/spotify/official --update || true
+
       - name: Restore Spotify Charts browser profile
         env:
           SPOTIFY_CHARTS_PROFILE_ZIP_B64: ${{ secrets.SPOTIFY_CHARTS_PROFILE_ZIP_B64 }}
@@ -66,11 +99,16 @@ jobs:
           fi
           npm run spotify:update:latest -- --regions global,us --lag-days 2 --chunk-days 2 --headless --verify-build $EXTRA_ARGS
 
+      - name: Sync Spotify raw CSVs and public data to OSS
+        run: |
+          ossutil cp -r data/raw/spotify/official "oss://$OSS_BUCKET/raw/spotify" --update
+          ossutil cp -r public/data "oss://$OSS_BUCKET/data" --update
+
       - name: Commit updated data snapshot
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/raw/spotify/official/*.csv public/data package.json scripts
+          git add public/data package.json scripts
           if git diff --cached --quiet; then
             echo "No Spotify data changes to commit."
           else

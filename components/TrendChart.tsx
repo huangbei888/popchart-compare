@@ -379,8 +379,9 @@ export default function TrendChart({
         </div>
       </div>
 
+      <div className="-mx-3 overflow-x-auto pb-2 sm:mx-0">
       <div
-        className={`${isExpanded ? "h-[calc(100vh-190px)] min-h-[560px]" : "h-[820px] min-h-[820px]"} relative w-full min-w-0 overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#050806] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]`}
+        className={`${isExpanded ? "h-[calc(100vh-190px)] min-h-[560px] min-w-[780px]" : "h-[620px] min-h-[620px] min-w-[760px] sm:h-[820px] sm:min-h-[820px] sm:min-w-0"} relative w-full overflow-hidden rounded-[1.1rem] border border-white/10 bg-[#050806] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:rounded-[1.35rem]`}
       >
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.055),transparent_21%),repeating-linear-gradient(0deg,rgba(255,255,255,0.025)_0_1px,transparent_1px_24px)]" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#1ed760]/65 to-transparent" />
@@ -391,7 +392,7 @@ export default function TrendChart({
             还没有可展示的榜单数据。请先搜索并加入歌曲，或切换平台/地区。
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height="100%" minWidth={320} minHeight={320}>
+          <ResponsiveContainer width="100%" height="100%" minWidth={720} minHeight={320}>
             <ComposedChart data={renderedData} margin={{ top: 40, right: 42, left: 20, bottom: 30 }}>
               <defs>
                 {visibleWorks.map((work, index) => {
@@ -558,18 +559,19 @@ export default function TrendChart({
           </ResponsiveContainer>
         )}
       </div>
+      </div>
     </>
   );
 
   return (
     <>
-      <section className="stage-panel rounded-[1.7rem] p-5">
+    <section className="stage-panel min-w-0 rounded-[1.35rem] p-4 sm:rounded-[1.7rem] sm:p-5">
         {expanded ? null : renderChart(false)}
       </section>
 
       {expanded ? (
         <div className="fixed inset-0 z-50 overflow-auto bg-[#090909]/95 p-4 backdrop-blur-xl sm:p-6">
-          <section className="stage-panel mx-auto min-h-[calc(100vh-48px)] max-w-[1800px] rounded-[1.7rem] p-5">
+          <section className="stage-panel mx-auto min-h-[calc(100vh-48px)] max-w-[1800px] rounded-[1.35rem] p-4 sm:rounded-[1.7rem] sm:p-5">
             {renderChart(true)}
           </section>
         </div>

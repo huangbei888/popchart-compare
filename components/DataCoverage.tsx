@@ -21,7 +21,7 @@ export default function DataCoverage({ dataset, works, platform }: DataCoverageP
   const topGaps = dataset.gaps.slice(0, 3);
 
   return (
-    <section className="stage-panel rounded-[1.6rem] p-5">
+    <section className="stage-panel rounded-[1.35rem] p-4 sm:rounded-[1.6rem] sm:p-5">
       <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.2em] text-[#1ed760]">Coverage</p>

@@ -411,9 +411,9 @@ export default function Home() {
   };
 
   return (
-    <main className="stage-shell mx-auto flex min-h-screen w-full max-w-[1540px] flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
-      <header className="stage-panel overflow-hidden rounded-[2rem] p-6 sm:p-8">
-        <div className="absolute left-8 right-8 top-0 h-px bg-gradient-to-r from-transparent via-[#1ed760] to-transparent" />
+    <main className="stage-shell mx-auto flex min-h-screen w-full max-w-[1540px] flex-col gap-4 px-3 py-4 sm:gap-6 sm:px-6 sm:py-8 lg:px-8">
+      <header className="stage-panel overflow-hidden rounded-[1.35rem] p-4 sm:rounded-[2rem] sm:p-8">
+        <div className="absolute left-4 right-4 top-0 h-px bg-gradient-to-r from-transparent via-[#1ed760] to-transparent sm:left-8 sm:right-8" />
         <div className="relative flex flex-wrap items-start justify-between gap-7">
           <div className="max-w-4xl">
             <div className="mb-5 flex flex-wrap gap-2">
@@ -424,7 +424,7 @@ export default function Home() {
                 Billboard + Spotify
               </span>
             </div>
-            <h1 className="text-5xl font-black leading-[0.92] tracking-tight text-[#f4fff7] sm:text-7xl">
+            <h1 className="text-4xl font-black leading-[0.92] tracking-tight text-[#f4fff7] sm:text-7xl">
               PopChart Compare
             </h1>
             <p className="mt-5 text-lg font-semibold text-[#d6e7dc]">欧美流行单曲榜单走势对比器</p>
@@ -433,7 +433,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid min-w-[240px] gap-3 rounded-[1.6rem] border border-white/10 bg-[#0d120f]/90 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+          <div className="grid min-w-0 w-full gap-3 rounded-[1.2rem] border border-white/10 bg-[#0d120f]/90 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:min-w-[240px] sm:w-auto sm:rounded-[1.6rem]">
             <div className="flex items-center justify-between gap-3">
               <span className="text-xs font-black uppercase tracking-[0.2em] text-[#6f8178]">Now loaded</span>
               <span className="h-2.5 w-2.5 rounded-full bg-[#1ed760] shadow-[0_0_18px_rgba(30,215,96,0.8)]" />
@@ -455,8 +455,8 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="grid gap-6 xl:grid-cols-[360px_1fr]">
-        <div className="grid content-start gap-6">
+      <div className="grid min-w-0 gap-4 sm:gap-6 xl:grid-cols-[360px_1fr]">
+        <div className="grid min-w-0 content-start gap-6">
           <SearchCommand
             catalog={searchCatalog}
             selectedWorkIds={selectedWorkIds}
@@ -479,7 +479,7 @@ export default function Home() {
             onPrimeCatalog={primeSearchCatalog}
           />
 
-          <section className="stage-panel rounded-[1.6rem] p-5">
+          <section className="stage-panel rounded-[1.35rem] p-4 sm:rounded-[1.6rem] sm:p-5">
             <div className="mb-5 flex items-center justify-between gap-3">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.2em] text-[#1ed760]">Control Deck</p>
@@ -638,8 +638,8 @@ export default function Home() {
           <DataCoverage dataset={datasetCoverage} works={workCoverage} platform={platform} />
         </div>
 
-        <div className="grid content-start gap-6">
-          <section className="stage-panel rounded-[1.6rem] p-4">
+        <div className="grid min-w-0 content-start gap-6">
+          <section className="stage-panel min-w-0 rounded-[1.35rem] p-4 sm:rounded-[1.6rem]">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.2em] text-[#1ed760]">Selected Tracks</p>

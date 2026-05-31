@@ -171,14 +171,14 @@ export default function CrossPlatformChart({
 
   if (selectedWorks.length === 0) {
     return (
-      <section className="stage-panel rounded-[1.7rem] p-5 text-sm text-[#8fa399]">
+      <section className="stage-panel rounded-[1.35rem] p-4 text-sm text-[#8fa399] sm:rounded-[1.7rem] sm:p-5">
         先选择一首歌，就可以查看 Billboard vs Spotify 的同歌跨平台对比。
       </section>
     );
   }
 
   return (
-    <section className="stage-panel rounded-[1.7rem] p-5">
+    <section className="stage-panel min-w-0 rounded-[1.35rem] p-4 sm:rounded-[1.7rem] sm:p-5">
       <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[#1ed760]">Cross-Platform</p>
@@ -203,7 +203,7 @@ export default function CrossPlatformChart({
               key={work.work_id}
               type="button"
               onClick={() => onActiveWorkChange(work.work_id)}
-              className={`flex min-w-[220px] items-center gap-3 rounded-[1.2rem] border p-2 text-left transition ${
+              className={`flex min-w-0 flex-1 basis-full items-center gap-3 rounded-[1.2rem] border p-2 text-left transition sm:min-w-[220px] sm:basis-auto ${
                 activeWork?.work_id === work.work_id
                   ? "border-[#1ed760]/50 bg-[#1ed760]/10"
                   : "border-white/10 bg-black/20 hover:border-white/20"
@@ -251,7 +251,8 @@ export default function CrossPlatformChart({
         </div>
       </div>
 
-      <div className="relative h-[620px] min-h-[620px] w-full overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#050806] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+      <div className="-mx-3 overflow-x-auto pb-2 sm:mx-0">
+      <div className="relative h-[560px] min-h-[560px] min-w-[760px] overflow-hidden rounded-[1.1rem] border border-white/10 bg-[#050806] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:h-[620px] sm:min-h-[620px] sm:min-w-0 sm:rounded-[1.35rem]">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.055),transparent_21%),repeating-linear-gradient(0deg,rgba(255,255,255,0.025)_0_1px,transparent_1px_24px)]" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#1ed760]/65 to-transparent" />
         {!mounted ? (
@@ -265,7 +266,7 @@ export default function CrossPlatformChart({
             至少保留一条平台线，才能绘制跨平台走势。
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height="100%" minWidth={320} minHeight={320}>
+          <ResponsiveContainer width="100%" height="100%" minWidth={720} minHeight={320}>
             <ComposedChart data={data} margin={{ top: 40, right: 42, left: 20, bottom: 30 }}>
               <defs>
                 {SERIES.map((series) => (
@@ -380,6 +381,7 @@ export default function CrossPlatformChart({
             </ComposedChart>
           </ResponsiveContainer>
         )}
+      </div>
       </div>
     </section>
   );

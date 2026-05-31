@@ -115,8 +115,8 @@ export default function ComparisonTable({ metrics, selectedCount }: ComparisonTa
   };
 
   return (
-    <section className="stage-panel overflow-hidden rounded-[1.7rem]">
-      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-white/10 px-5 py-5">
+    <section className="stage-panel min-w-0 overflow-hidden rounded-[1.35rem] sm:rounded-[1.7rem]">
+      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-white/10 px-4 py-4 sm:px-5 sm:py-5">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.2em] text-[#1ed760]">Comparison Table</p>
           <h2 className="mt-1 text-2xl font-black text-white">榜单表现对比表</h2>
@@ -125,7 +125,7 @@ export default function ComparisonTable({ metrics, selectedCount }: ComparisonTa
         {missingCount > 0 ? <MetricBadge tone="gold">{missingCount} 首已选歌曲暂无本地数据</MetricBadge> : null}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-5 py-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-4 py-4 sm:px-5">
         <div className="flex flex-wrap gap-2">
           {(["All", "Charting", "Out", "Re-entry"] as StatusFilter[]).map((status) => (
             <button
