@@ -10,7 +10,8 @@
     "spotify:links": "python scripts/make_spotify_official_links.py",
     "spotify:download": "node scripts/download_spotify_official.mjs",
     "spotify:download:range": "node scripts/download_spotify_range.mjs",
-    "spotify:update:latest": "node scripts/update_spotify_latest.mjs"
+    "spotify:update:latest": "node scripts/update_spotify_latest.mjs",
+    "spotify:export-state": "node scripts/export_spotify_storage_state.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

@@ -22,6 +22,7 @@ function parseArgs() {
     loginFirst: true,
     skipExisting: true,
     headless: false,
+    storageState: "",
   };
 
   for (let i = 0; i < args.length; i += 1) {
@@ -39,6 +40,7 @@ function parseArgs() {
     else if (arg === "--no-login-first") options.loginFirst = false;
     else if (arg === "--no-skip-existing") options.skipExisting = false;
     else if (arg === "--headless") options.headless = true;
+    else if (arg === "--storage-state") options.storageState = args[++i];
     else if (arg === "--help") {
       console.log(`Usage:
 node scripts/download_spotify_range.mjs --start 2025-07-15 --end 2026-05-19 --regions us --chunk-days 30
@@ -57,6 +59,7 @@ Options:
   --no-login-first       Do not pause for login before the first batch
   --no-skip-existing     Re-download existing CSV files
   --headless             Run browser headless after login is already saved
+  --storage-state <path> Playwright storageState JSON for Spotify Charts login
 `);
       process.exit(0);
     }
@@ -174,6 +177,7 @@ async function main() {
     if (options.loginFirst && chunkIndex === 1) downloadArgs.push("--login-first");
     if (!options.skipExisting) downloadArgs.push("--no-skip-existing");
     if (options.headless) downloadArgs.push("--headless");
+    if (options.storageState) downloadArgs.push("--storage-state", options.storageState);
 
     let chunkSucceeded = false;
     for (let attempt = 0; attempt <= options.chunkRetries; attempt += 1) {

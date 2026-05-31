@@ -48,6 +48,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Chromium
+        run: npx playwright-core install chromium
+
       - name: Install ossutil
         run: |
           curl -L -o ossutil.zip https://gosspublic.alicdn.com/ossutil/v2/2.3.0/ossutil-2.3.0-linux-amd64.zip
@@ -71,22 +74,20 @@ jobs:
           endpoint=$OSS_ENDPOINT
           EOF
 
+      - name: Restore Spotify storage state
+        env:
+          SPOTIFY_CHARTS_STORAGE_STATE_B64: ${{ secrets.SPOTIFY_CHARTS_STORAGE_STATE_B64 }}
+        run: |
+          if [ -z "$SPOTIFY_CHARTS_STORAGE_STATE_B64" ]; then
+            echo "::error::Missing SPOTIFY_CHARTS_STORAGE_STATE_B64 repository secret."
+            exit 1
+          fi
+          echo "$SPOTIFY_CHARTS_STORAGE_STATE_B64" | base64 -d > spotify-storage-state.json
+
       - name: Restore cached Spotify raw CSVs from OSS
         run: |
           mkdir -p data/raw/spotify/official
           ossutil cp -r "oss://$OSS_BUCKET/raw/spotify" data/raw/spotify/official --update || true
-
-      - name: Restore Spotify Charts browser profile
-        env:
-          SPOTIFY_CHARTS_PROFILE_ZIP_B64: ${{ secrets.SPOTIFY_CHARTS_PROFILE_ZIP_B64 }}
-        run: |
-          if [ -z "$SPOTIFY_CHARTS_PROFILE_ZIP_B64" ]; then
-            echo "::error::Missing SPOTIFY_CHARTS_PROFILE_ZIP_B64 secret. Export your logged-in .spotify-charts-profile folder as a base64 zip first."
-            exit 1
-          fi
-          echo "$SPOTIFY_CHARTS_PROFILE_ZIP_B64" | base64 -d > spotify-profile.zip
-          unzip -q spotify-profile.zip -d .
-          test -d .spotify-charts-profile
 
       - name: Download latest Spotify charts and rebuild public data
         run: |
@@ -97,7 +98,7 @@ jobs:
           if [ -n "${{ github.event.inputs.end }}" ]; then
             EXTRA_ARGS="$EXTRA_ARGS --end ${{ github.event.inputs.end }}"
           fi
-          npm run spotify:update:latest -- --regions global,us --lag-days 2 --chunk-days 2 --headless --verify-build $EXTRA_ARGS
+          npm run spotify:update:latest -- --regions global,us --lag-days 2 --chunk-days 2 --headless --storage-state spotify-storage-state.json --verify-build $EXTRA_ARGS
 
       - name: Sync Spotify raw CSVs and public data to OSS
         run: |

@@ -13,8 +13,11 @@ out/
 
 # local browser/auth state
 .spotify-charts-profile/
+spotify-profile.zip
+spotify-storage-state.json
 .tools/
 ossutil_output/
+logs/
 
 # logs
 npm-debug.log*

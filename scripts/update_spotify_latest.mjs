@@ -20,6 +20,7 @@ function parseArgs() {
     chunkRetrySleepMs: 60000,
     loginFirst: false,
     headless: true,
+    storageState: "",
     skipDownload: false,
     forceRebuild: false,
     verifyBuild: false,
@@ -39,6 +40,7 @@ function parseArgs() {
     else if (arg === "--chunk-retry-sleep-ms") options.chunkRetrySleepMs = Number(args[++i]);
     else if (arg === "--login-first") options.loginFirst = true;
     else if (arg === "--headed") options.headless = false;
+    else if (arg === "--storage-state") options.storageState = args[++i];
     else if (arg === "--skip-download") options.skipDownload = true;
     else if (arg === "--force-rebuild") options.forceRebuild = true;
     else if (arg === "--verify-build") options.verifyBuild = true;
@@ -65,6 +67,7 @@ Options:
   --chunk-retry-sleep-ms <n>   Delay between chunk retries, default 60000
   --login-first                Pause for browser login before first download
   --headed                     Show browser window
+  --storage-state <path>       Playwright storageState JSON for Spotify Charts login
   --skip-download              Only rebuild processed/public data
   --force-rebuild              Rebuild even when no missing dates are found
   --verify-build               Run npm run build after data rebuild
@@ -187,6 +190,7 @@ async function main() {
     ];
     if (!options.loginFirst) args.push("--no-login-first");
     if (options.headless) args.push("--headless");
+    if (options.storageState) args.push("--storage-state", options.storageState);
 
     console.log(`[spotify:update] downloading ${regions.join(",")} ${formatDate(start)} -> ${formatDate(end)}`);
     await run(process.execPath, args);
