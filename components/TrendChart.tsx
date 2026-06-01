@@ -29,7 +29,7 @@ type TrendChartProps = {
 const COLORS = ["#8aaeb6", "#7c996b", "#dfc44f", "#d28c9c", "#5fb6a6"];
 const AREA_COLORS = ["#cfe1e2", "#d8e5ce", "#fff0a6", "#f3cbd2", "#bfe5dc"];
 const LINE_SHADOWS = ["#8aaeb6", "#7c996b", "#dfc44f", "#d28c9c", "#5fb6a6"];
-const SPEED_OPTIONS = [0.5, 1, 2, 4];
+const SPEED_OPTIONS = [0.5, 1, 2, 4, 8, 16];
 
 type SegmentSeries = {
   key: string;
