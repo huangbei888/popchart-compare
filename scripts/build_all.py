@@ -46,6 +46,48 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(file))
 
 
+def read_json(path: Path, default):
+    if not path.exists():
+        return default
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def dataset_key(entry: dict) -> tuple[str, str]:
+    return (entry.get("platform", ""), entry.get("region", ""))
+
+
+def dedupe_entries(rows: list[dict]) -> list[dict]:
+    deduped: dict[tuple[str, str, str, str, str], dict] = {}
+    for entry in rows:
+        if not entry.get("work_id"):
+            continue
+        key = (
+            entry.get("work_id", ""),
+            entry.get("platform", ""),
+            entry.get("chart_name", ""),
+            entry.get("region", ""),
+            entry.get("date", ""),
+        )
+        deduped[key] = entry
+
+    return sorted(
+        deduped.values(),
+        key=lambda row: (row["platform"], row["region"], row["work_id"], row["date"]),
+    )
+
+
+def read_existing_public_work_entries() -> list[dict]:
+    if not PUBLIC_WORK_ENTRIES_DIR.exists():
+        return []
+
+    rows: list[dict] = []
+    for path in PUBLIC_WORK_ENTRIES_DIR.glob("*.json"):
+        data = read_json(path, [])
+        if isinstance(data, list):
+            rows.extend(item for item in data if isinstance(item, dict))
+    return rows
+
+
 def normalize_entry(row: dict[str, str]) -> dict:
     return {
         "work_id": row.get("work_id", ""),
@@ -263,21 +305,14 @@ def main() -> None:
         + legacy_spotify_entries
     )
 
-    deduped: dict[tuple[str, str, str, str, str], dict] = {}
-    for row in raw_entries:
-        if not row.get("work_id"):
-            continue
-        entry = normalize_entry(row)
-        key = (
-            entry["work_id"],
-            entry["platform"],
-            entry["chart_name"],
-            entry["region"],
-            entry["date"],
-        )
-        deduped[key] = entry
-
-    entries = sorted(deduped.values(), key=lambda row: (row["platform"], row["region"], row["work_id"], row["date"]))
+    rebuilt_entries = [normalize_entry(row) for row in raw_entries if row.get("work_id")]
+    rebuilt_datasets = {dataset_key(entry) for entry in rebuilt_entries if all(dataset_key(entry))}
+    preserved_entries = [
+        entry
+        for entry in read_existing_public_work_entries()
+        if dataset_key(entry) not in rebuilt_datasets
+    ]
+    entries = dedupe_entries(rebuilt_entries + preserved_entries)
 
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     WORKS_JSON_PATH.write_text(json.dumps(works, ensure_ascii=False, indent=2), encoding="utf-8")
