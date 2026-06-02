@@ -685,13 +685,13 @@ export default function Home() {
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.2em] text-[#1ed760]">Selected Tracks</p>
-              <h2 className="mt-1 text-lg font-black text-white">已选歌曲</h2>
+              <h2 className="mt-1 text-lg font-black text-white">待选择歌曲</h2>
             </div>
             <span className="text-sm font-semibold text-[#8fa399]">已选 {selectedWorks.length}/5</span>
           </div>
           {selectedWorks.length === 0 ? (
             <div className="rounded-[1.3rem] border border-dashed border-white/15 bg-black/24 px-4 py-10 text-center text-sm text-[#8fa399]">
-              先在左侧搜索并加入歌曲。默认不自动选歌，避免打开页面就替你做决定。
+              请输入歌曲
             </div>
           ) : (
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3">
