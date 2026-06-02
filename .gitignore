@@ -16,6 +16,7 @@ out/
 spotify-profile.zip
 spotify-storage-state.json
 public/audio/*.mp3
+!public/audio/olivia-rodrigo.mp3
 .tools/
 ossutil_output/
 logs/
