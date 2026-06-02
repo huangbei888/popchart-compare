@@ -54,6 +54,12 @@ function statusTone(status: ChartMetric["status"]) {
   return "red";
 }
 
+function statusLabel(status: ChartMetric["status"]) {
+  if (status === "Charting") return "在榜";
+  if (status === "Re-entry") return "回榜";
+  return "出榜";
+}
+
 function sortValue(metric: ChartMetric, key: SortKey): number {
   if (key === "status") return statusOrder[metric.status];
   const value = metric[key];
@@ -118,7 +124,7 @@ export default function ComparisonTable({ metrics, selectedCount }: ComparisonTa
     <section className="stage-panel min-w-0 overflow-hidden rounded-[1.35rem] sm:rounded-[1.7rem]">
       <div className="flex flex-wrap items-end justify-between gap-3 border-b border-white/10 px-4 py-4 sm:px-5 sm:py-5">
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[#1ed760]">Comparison Table</p>
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[#1ed760]">榜单对比</p>
           <h2 className="mt-1 text-2xl font-black text-white">榜单表现对比表</h2>
           <p className="mt-1 text-sm leading-6 text-[#8fa399]">按峰值、续航、涨跌幅和当前状态排序筛选。</p>
         </div>
@@ -138,12 +144,12 @@ export default function ComparisonTable({ metrics, selectedCount }: ComparisonTa
                   : "border-white/10 bg-white/[0.035] text-[#8fa399] hover:text-white"
               }`}
             >
-              {status}
+              {status === "All" ? "全部" : statusLabel(status)}
             </button>
           ))}
         </div>
         <div className="text-xs font-semibold text-[#6f8178]">
-          Showing {filteredMetrics.length} of {metrics.length}
+          显示 {filteredMetrics.length} / {metrics.length}
         </div>
       </div>
 
@@ -158,32 +164,32 @@ export default function ComparisonTable({ metrics, selectedCount }: ComparisonTa
           <table className="w-full min-w-[1180px] border-collapse text-left text-sm">
             <thead className="bg-white/[0.035] text-xs uppercase tracking-wide text-[#6f8178]">
               <tr>
-                <th className="w-[320px] px-5 py-4 font-black">Track</th>
+                <th className="w-[320px] px-5 py-4 font-black">歌曲</th>
                 <th className="px-4 py-4 font-black">
                   <div className="flex flex-wrap gap-1">
-                    <SortButton label="Peak" sortKey="peakRank" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
-                    <SortButton label="Debut" sortKey="debutRank" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
-                    <SortButton label="Latest" sortKey="latestRank" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
+                    <SortButton label="峰值排名" sortKey="peakRank" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
+                    <SortButton label="首次进榜" sortKey="debutRank" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
+                    <SortButton label="最后在榜排名" sortKey="latestRank" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
                   </div>
                 </th>
                 <th className="px-4 py-4 font-black">
                   <div className="flex flex-wrap gap-1">
-                    <SortButton label="Entries" sortKey="totalEntries" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
-                    <SortButton label="#1" sortKey="weeksAtNumberOne" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
-                    <SortButton label="Top 10" sortKey="weeksInTop10" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
+                    <SortButton label="在榜周数" sortKey="totalEntries" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
+                    <SortButton label="Top 1 周数" sortKey="weeksAtNumberOne" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
+                    <SortButton label="Top 10 周数" sortKey="weeksInTop10" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
                   </div>
                 </th>
                 <th className="px-4 py-4 font-black">
                   <div className="flex flex-wrap gap-1">
-                    <SortButton label="Rise" sortKey="biggestRise" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
-                    <SortButton label="Drop" sortKey="biggestDrop" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
+                    <SortButton label="最大涨幅" sortKey="biggestRise" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
+                    <SortButton label="最大跌幅" sortKey="biggestDrop" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
                   </div>
                 </th>
                 <th className="px-4 py-4 font-black">
-                  <SortButton label="Status" sortKey="status" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
+                  <SortButton label="状态" sortKey="status" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
                 </th>
-                <th className="px-4 py-4 font-black">Sparkline</th>
-                <th className="px-4 py-4 font-black">Streams</th>
+                <th className="px-4 py-4 font-black">走势</th>
+                <th className="px-4 py-4 font-black">播放量</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.08]">
@@ -212,32 +218,32 @@ export default function ComparisonTable({ metrics, selectedCount }: ComparisonTa
                   </td>
                   <td className="px-4 py-5">
                     <div className="flex flex-wrap gap-2">
-                      <RankBadge label="Peak" rank={metric.peakRank} />
-                      <RankBadge label="Debut" rank={metric.debutRank} />
-                      <RankBadge label="Latest" rank={metric.latestRank} />
+                      <RankBadge label="峰值" rank={metric.peakRank} />
+                      <RankBadge label="首次进榜" rank={metric.debutRank} />
+                      <RankBadge label="最后在榜" rank={metric.latestRank} />
                     </div>
                     <div className="mt-2 text-xs text-[#6f8178]">
                       {formatDate(metric.firstChartDate)} → {formatDate(metric.latestDate)}
                     </div>
                   </td>
                   <td className="px-4 py-5">
-                    <div className="font-black text-white">{metric.totalEntries} entries</div>
-                    <div className="mt-1 text-xs text-[#8fa399]">{formatNumber(metric.weeksOnChart)} weeks on chart</div>
+                    <div className="font-black text-white">{metric.totalEntries} 周在榜</div>
+                    <div className="mt-1 text-xs text-[#8fa399]">累计在榜 {formatNumber(metric.weeksOnChart)} 期</div>
                     <div className="mt-2 flex flex-wrap gap-2">
-                      <MetricBadge tone={metric.weeksAtNumberOne > 0 ? "gold" : "gray"}>#1 × {metric.weeksAtNumberOne}</MetricBadge>
-                      <MetricBadge tone={metric.weeksInTop10 > 0 ? "green" : "gray"}>Top 10 × {metric.weeksInTop10}</MetricBadge>
+                      <MetricBadge tone={metric.weeksAtNumberOne > 0 ? "gold" : "gray"}>Top 1 {metric.weeksAtNumberOne} 周</MetricBadge>
+                      <MetricBadge tone={metric.weeksInTop10 > 0 ? "green" : "gray"}>Top 10 {metric.weeksInTop10} 周</MetricBadge>
                     </div>
                   </td>
                   <td className="px-4 py-5">
                     <div className="flex flex-wrap gap-2">
-                      <MetricBadge tone={metric.biggestRise ? "green" : "gray"}>Rise {formatNumber(metric.biggestRise)}</MetricBadge>
-                      <MetricBadge tone={metric.biggestDrop ? "red" : "gray"}>Drop {formatNumber(metric.biggestDrop)}</MetricBadge>
+                      <MetricBadge tone={metric.biggestRise ? "green" : "gray"}>最大涨幅 {formatNumber(metric.biggestRise)}</MetricBadge>
+                      <MetricBadge tone={metric.biggestDrop ? "red" : "gray"}>最大跌幅 {formatNumber(metric.biggestDrop)}</MetricBadge>
                     </div>
                   </td>
                   <td className="px-4 py-5">
                     <div className="flex flex-wrap gap-2">
-                      <MetricBadge tone={statusTone(metric.status)}>{metric.status}</MetricBadge>
-                      {metric.reEntryCount > 0 ? <MetricBadge tone="blue">Re × {metric.reEntryCount}</MetricBadge> : null}
+                      <MetricBadge tone={statusTone(metric.status)}>{statusLabel(metric.status)}</MetricBadge>
+                      {metric.reEntryCount > 0 ? <MetricBadge tone="blue">回榜 {metric.reEntryCount} 次</MetricBadge> : null}
                     </div>
                   </td>
                   <td className="px-4 py-5">

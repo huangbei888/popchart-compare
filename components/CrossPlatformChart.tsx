@@ -16,7 +16,7 @@ import {
 import CoverArt from "@/components/CoverArt";
 import MetricBadge from "@/components/MetricBadge";
 import { getRelativeDay, getTimelineBaseDate } from "@/lib/chartUtils";
-import type { ChartEntry, TimelineMode, Work } from "@/lib/types";
+import type { ChartEntry, ChartValueMode, TimelineMode, Work } from "@/lib/types";
 
 type CrossPlatformChartProps = {
   entries: ChartEntry[];
@@ -80,7 +80,7 @@ function formatX(date: string, work: Work, timelineMode: TimelineMode) {
   return { x: `Day ${day}`, sortValue: day };
 }
 
-function buildCrossPlatformData(entries: ChartEntry[], work: Work, timelineMode: TimelineMode) {
+function buildCrossPlatformData(entries: ChartEntry[], work: Work, timelineMode: TimelineMode, valueMode: ChartValueMode) {
   const points = new Map<string, Record<string, string | number | null>>();
 
   SERIES.forEach((series) => {
@@ -90,13 +90,13 @@ function buildCrossPlatformData(entries: ChartEntry[], work: Work, timelineMode:
           entry.work_id === work.work_id &&
           entry.platform === series.platform &&
           entry.region.toLowerCase() === series.region &&
-          entry.rank !== null &&
+          (valueMode === "streams" ? entry.streams !== null : entry.rank !== null) &&
           dayjs(entry.date).isValid(),
       )
       .forEach((entry) => {
         const { x, sortValue } = formatX(entry.date, work, timelineMode);
         const point = points.get(x) ?? { x, sortValue };
-        point[series.key] = entry.rank;
+        point[series.key] = valueMode === "streams" ? entry.streams : entry.rank;
         points.set(x, point);
       });
   });
@@ -104,13 +104,13 @@ function buildCrossPlatformData(entries: ChartEntry[], work: Work, timelineMode:
   return Array.from(points.values()).sort((a, b) => Number(a.sortValue ?? 0) - Number(b.sortValue ?? 0));
 }
 
-function countRows(entries: ChartEntry[], workId: string, series: SeriesConfig) {
+function countRows(entries: ChartEntry[], workId: string, series: SeriesConfig, valueMode: ChartValueMode) {
   return entries.filter(
     (entry) =>
       entry.work_id === workId &&
       entry.platform === series.platform &&
       entry.region.toLowerCase() === series.region &&
-      entry.rank !== null,
+      (valueMode === "streams" ? entry.streams !== null : entry.rank !== null),
   ).length;
 }
 
@@ -134,20 +134,22 @@ export default function CrossPlatformChart({
 }: CrossPlatformChartProps) {
   const [mounted, setMounted] = useState(false);
   const [enabledSeriesKeys, setEnabledSeriesKeys] = useState<string[]>(DEFAULT_SERIES_KEYS);
+  const [valueMode, setValueMode] = useState<ChartValueMode>("rank");
+  const isRankMode = valueMode === "rank";
   const activeWork = selectedWorks.find((work) => work.work_id === activeWorkId) ?? selectedWorks[0] ?? null;
   const data = useMemo(
-    () => (activeWork ? buildCrossPlatformData(entries, activeWork, timelineMode) : []),
-    [activeWork, entries, timelineMode],
+    () => (activeWork ? buildCrossPlatformData(entries, activeWork, timelineMode, valueMode) : []),
+    [activeWork, entries, timelineMode, valueMode],
   );
   const seriesCounts = useMemo(
     () =>
       new Map(
         SERIES.map((series) => [
           series.key,
-          activeWork ? countRows(entries, activeWork.work_id, series) : 0,
+          activeWork ? countRows(entries, activeWork.work_id, series, valueMode) : 0,
         ]),
       ),
-    [activeWork, entries],
+    [activeWork, entries, valueMode],
   );
   const availableSeries = activeWork ? SERIES.filter((series) => hasSeriesData(data, series)) : [];
   const visibleSeries = availableSeries.filter((series) => enabledSeriesKeys.includes(series.key));
@@ -188,6 +190,28 @@ export default function CrossPlatformChart({
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
+          <div className="inline-flex rounded-full border border-white/10 bg-black/35 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+            {(["rank", "streams"] as ChartValueMode[]).map((option) => {
+              const active = valueMode === option;
+              return (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => setValueMode(option)}
+                  className={`rounded-full px-3 py-1 text-xs font-black uppercase tracking-[0.14em] transition ${
+                    active
+                      ? "bg-[#1ed760] text-black shadow-[0_0_18px_rgba(30,215,96,0.22)]"
+                      : "text-[#8fa399] hover:bg-white/[0.07] hover:text-white"
+                  }`}
+                >
+                  {option === "rank" ? "排名" : "播放量"}
+                </button>
+              );
+            })}
+          </div>
+          <MetricBadge tone={valueMode === "streams" ? "blue" : "green"}>
+            {valueMode === "streams" ? "Streams" : "Rank"}
+          </MetricBadge>
           {visibleSeries.map((series) => (
             <MetricBadge key={series.key} tone="green">
               {series.shortLabel}: {(seriesCounts.get(series.key) ?? 0).toLocaleString()}
@@ -305,16 +329,18 @@ export default function CrossPlatformChart({
               />
               <YAxis
                 type="number"
-                reversed
+                reversed={isRankMode}
                 allowDecimals={false}
-                domain={[1, 200]}
-                ticks={[1, 10, 50, 100, 200]}
-                tickFormatter={(value) => `#${value}`}
+                domain={isRankMode ? [1, 200] : [0, "auto"]}
+                ticks={isRankMode ? [1, 10, 50, 100, 200] : undefined}
+                tickFormatter={(value) =>
+                  isRankMode ? `#${value}` : new Intl.NumberFormat("en", { notation: "compact" }).format(Number(value))
+                }
                 axisLine={{ stroke: "rgba(214,231,220,0.35)" }}
                 tickLine={false}
                 tick={{ fill: "#8fa399", fontSize: 12, fontWeight: 800 }}
                 label={{
-                  value: "rank value",
+                  value: valueMode === "streams" ? "stream value" : "rank value",
                   angle: -90,
                   position: "insideLeft",
                   offset: 0,
@@ -323,7 +349,7 @@ export default function CrossPlatformChart({
                   fontSize: 14,
                   fontWeight: 700,
                 }}
-                width={72}
+                width={isRankMode ? 72 : 86}
               />
               <Tooltip
                 contentStyle={{
@@ -337,7 +363,11 @@ export default function CrossPlatformChart({
                 labelStyle={{ color: "#d6e7dc", marginBottom: 8 }}
                 formatter={(value, name) => {
                   const series = SERIES.find((item) => item.key === name);
-                  return [`#${value}`, series?.label ?? name];
+                  const formatted =
+                    valueMode === "rank"
+                      ? `#${value}`
+                      : new Intl.NumberFormat("en", { maximumFractionDigits: 0 }).format(Number(value));
+                  return [formatted, series?.label ?? name];
                 }}
                 labelFormatter={(label) => formatXAxisTick(label, timelineMode)}
               />
@@ -353,7 +383,7 @@ export default function CrossPlatformChart({
                   dataKey={series.key}
                   fill={`url(#cross-area-${series.key})`}
                   stroke="none"
-                  baseValue={200}
+                  baseValue={isRankMode ? 200 : 0}
                   legendType="none"
                   dot={false}
                   activeDot={false}

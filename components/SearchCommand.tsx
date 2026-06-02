@@ -10,7 +10,6 @@ type SearchCommandProps = {
   catalog: Work[];
   selectedWorkIds: string[];
   onAdd: (workId: string) => void;
-  limit?: number;
   title?: string;
   subtitle?: string;
   badgeLabel?: string;
@@ -22,11 +21,53 @@ type SearchCommandProps = {
 const dash = "—";
 const rank = (value?: number | null) => (value ? `#${value}` : dash);
 
+function normalizeSearchText(value: string | undefined) {
+  return (value ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function hasArtist(work: Work, artist: string) {
+  return normalizeSearchText(work.artist).includes(artist);
+}
+
+function chartStrengthSort(a: Work, b: Work) {
+  return (
+    (a.peak_rank ?? 999) - (b.peak_rank ?? 999) ||
+    (b.total_chart_entries ?? 0) - (a.total_chart_entries ?? 0)
+  );
+}
+
+function buildDefaultRecommendations(catalog: Work[], limit: number) {
+  const ranked = catalog.slice().sort(chartStrengthSort);
+  const used = new Set<string>();
+  const picks: Work[] = [];
+  const add = (work: Work | undefined) => {
+    if (!work || used.has(work.work_id) || picks.length >= limit) return;
+    used.add(work.work_id);
+    picks.push(work);
+  };
+
+  ranked.filter((work) => hasArtist(work, "olivia rodrigo")).slice(0, Math.max(0, limit - 2)).forEach(add);
+  add(
+    ranked.find(
+      (work) => hasArtist(work, "sabrina carpenter") && normalizeSearchText(work.title).includes("espresso"),
+    ),
+  );
+  add(
+    ranked.find(
+      (work) => hasArtist(work, "taylor swift") && normalizeSearchText(work.title).includes("cruel summer"),
+    ),
+  );
+  add(ranked.find((work) => hasArtist(work, "taylor swift")));
+  ranked.filter((work) => hasArtist(work, "olivia rodrigo")).forEach(add);
+  ranked.forEach(add);
+
+  return picks.slice(0, limit);
+}
+
 export default function SearchCommand({
   catalog,
   selectedWorkIds,
   onAdd,
-  limit = 5,
   title = "Search catalog",
   subtitle = "Search by song or artist, then add up to 5 tracks.",
   badgeLabel,
@@ -35,7 +76,6 @@ export default function SearchCommand({
   onPrimeCatalog,
 }: SearchCommandProps) {
   const [query, setQuery] = useState("");
-  const [limitMessage, setLimitMessage] = useState(false);
   const selected = new Set(selectedWorkIds);
   const fuse = useMemo(
     () =>
@@ -48,24 +88,16 @@ export default function SearchCommand({
   );
 
   const results = useMemo(() => {
-    const base = query.trim()
-      ? fuse.search(query.trim()).map((result) => result.item)
-      : catalog
-          .slice()
-          .sort(
-            (a, b) =>
-              (a.peak_rank ?? 999) - (b.peak_rank ?? 999) ||
-              (b.total_chart_entries ?? 0) - (a.total_chart_entries ?? 0),
-          );
-    return base.filter((work) => !selected.has(work.work_id)).slice(0, 8);
+    const availableCatalog = catalog.filter((work) => !selected.has(work.work_id));
+    if (!query.trim()) return buildDefaultRecommendations(availableCatalog, 8);
+    return fuse
+      .search(query.trim())
+      .map((result) => result.item)
+      .filter((work) => !selected.has(work.work_id))
+      .slice(0, 8);
   }, [catalog, fuse, query, selected]);
 
   const add = (workId: string) => {
-    if (selectedWorkIds.length >= limit) {
-      setLimitMessage(true);
-      return;
-    }
-    setLimitMessage(false);
     onAdd(workId);
     setQuery("");
   };
@@ -88,18 +120,11 @@ export default function SearchCommand({
         onChange={(event) => {
           onPrimeCatalog?.();
           setQuery(event.target.value);
-          setLimitMessage(false);
         }}
         placeholder="输入歌曲名称"
         className="w-full rounded-full border border-white/10 bg-[#050806] px-4 py-2.5 text-sm text-[#f4fff7] outline-none transition placeholder:text-[#6f8178] focus:border-[#1ed760]/70 focus:bg-[#07100b]"
         style={{ colorScheme: "dark" }}
       />
-
-      {limitMessage ? (
-        <div className="mt-3 rounded-[1.15rem] border border-[#f8d66d]/25 bg-[#f8d66d]/10 px-4 py-3 text-sm text-[#ffe29a]">
-          最多同时对比 5 首歌。先移除一首，再添加新的歌曲。
-        </div>
-      ) : null}
 
       <div className="mt-3 grid gap-2">
         {isLoading ? (
