@@ -11,7 +11,7 @@ function parseArgs() {
     regions: "global,us",
     start: "",
     end: "",
-    lagDays: 2,
+    lagDays: 1,
     chunkDays: 7,
     sleepMs: 800,
     retries: 5,
@@ -58,7 +58,7 @@ Options:
   --regions <list>             Comma-separated regions, default global,us
   --start <YYYY-MM-DD>         Override start date
   --end <YYYY-MM-DD>           Override end date
-  --lag-days <n>               Use today-n as default end date, default 2
+  --lag-days <n>               Use today-n as default end date, default 1
   --chunk-days <n>             Date chunk size passed to downloader, default 7
   --sleep-ms <n>               Delay between API requests, default 800
   --retries <n>                API request retries, default 5
@@ -104,8 +104,9 @@ function defaultEndDate(lagDays) {
 function latestRawDate(region) {
   if (!existsSync(RAW_DIR)) return null;
   const pattern = new RegExp(`^regional-${region}-daily-(\\d{4}-\\d{2}-\\d{2})\\.csv$`);
-  const dates = readdirSync(RAW_DIR)
-    .map((name) => name.match(pattern)?.[1] ?? "")
+  const dates = readdirSync(RAW_DIR, { recursive: true, withFileTypes: true })
+    .filter((entry) => entry.isFile())
+    .map((entry) => entry.name.match(pattern)?.[1] ?? "")
     .filter(Boolean)
     .sort();
   return dates.at(-1) ?? null;

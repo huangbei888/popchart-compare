@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Area,
   CartesianGrid,
@@ -185,6 +185,8 @@ export default function TrendChart({
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackIndex, setPlaybackIndex] = useState(0);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [isExporting, setIsExporting] = useState(false);
+  const chartContainerRef = useRef<HTMLDivElement | null>(null);
   const selectedWorks = works.filter((work) => selectedWorkIds.includes(work.work_id));
   const visibleWorks = selectedWorks.filter((work) => data.some((point) => typeof point[work.work_id] === "number"));
   const yMax = platform === "spotify" ? 200 : 100;
@@ -270,6 +272,242 @@ export default function TrendChart({
     setPlaybackIndex(0);
   };
 
+  const exportPng = async () => {
+    const container = chartContainerRef.current;
+    if (!container || data.length === 0 || visibleWorks.length === 0 || isExporting) return;
+
+    setIsExporting(true);
+    try {
+      const { width, height } = container.getBoundingClientRect();
+      const exportWidth = Math.max(1, Math.round(width));
+      const exportHeight = Math.max(1, Math.round(height));
+      const scale = Math.min(3, Math.max(2, window.devicePixelRatio || 1));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(exportWidth * scale);
+      canvas.height = Math.round(exportHeight * scale);
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("Canvas is not available.");
+
+      const cssWidth = canvas.width / scale;
+      const cssHeight = canvas.height / scale;
+      const yAxisWidth = isRankMode ? 72 : 86;
+      const plot = {
+        left: 20 + yAxisWidth,
+        right: cssWidth - 42,
+        top: 40,
+        bottom: cssHeight - 92,
+      };
+      const plotWidth = Math.max(1, plot.right - plot.left);
+      const plotHeight = Math.max(1, plot.bottom - plot.top);
+      const sortValues = renderedData
+        .map((point) => numericValue(point.sortValue))
+        .filter((value): value is number => value !== null);
+      const xMin = Math.min(...sortValues);
+      const xMax = Math.max(...sortValues);
+      const xSpan = Math.max(1, xMax - xMin);
+      const streamMax = Math.max(
+        1,
+        ...segmentSeries.flatMap((series) =>
+          renderedData.map((point) => numericValue(point[series.key]) ?? 0),
+        ),
+      );
+      const streamMagnitude = 10 ** Math.floor(Math.log10(streamMax));
+      const streamDomainMax = Math.ceil(streamMax / streamMagnitude) * streamMagnitude;
+      const yDomainMax = isRankMode ? yMax : streamDomainMax;
+      const yDomainMin = isRankMode ? 1 : 0;
+      const ySpan = Math.max(1, yDomainMax - yDomainMin);
+      const xToCanvas = (value: number) => plot.left + ((value - xMin) / xSpan) * plotWidth;
+      const yToCanvas = (value: number) =>
+        isRankMode
+          ? plot.top + ((value - yDomainMin) / ySpan) * plotHeight
+          : plot.bottom - ((value - yDomainMin) / ySpan) * plotHeight;
+
+      context.scale(scale, scale);
+      context.fillStyle = "#050806";
+      context.fillRect(0, 0, cssWidth, cssHeight);
+
+      const bgGradient = context.createLinearGradient(0, 0, 0, cssHeight);
+      bgGradient.addColorStop(0, "rgba(255,255,255,0.055)");
+      bgGradient.addColorStop(0.21, "rgba(255,255,255,0)");
+      context.fillStyle = bgGradient;
+      context.fillRect(0, 0, cssWidth, cssHeight);
+
+      context.save();
+      context.strokeStyle = "rgba(255,255,255,0.025)";
+      context.lineWidth = 1;
+      for (let y = 0; y <= cssHeight; y += 24) {
+        context.beginPath();
+        context.moveTo(0, y + 0.5);
+        context.lineTo(cssWidth, y + 0.5);
+        context.stroke();
+      }
+      context.restore();
+
+      const yTicks = isRankMode
+        ? platform === "spotify"
+          ? [1, 10, 50, 100, 200]
+          : [1, 10, 50, 100]
+        : Array.from({ length: 5 }, (_, index) => (streamDomainMax / 4) * index);
+      context.save();
+      context.strokeStyle = "rgba(255,255,255,0.08)";
+      context.setLineDash([2, 12]);
+      yTicks.forEach((tick) => {
+        const y = yToCanvas(tick);
+        context.beginPath();
+        context.moveTo(plot.left, y);
+        context.lineTo(plot.right, y);
+        context.stroke();
+      });
+      context.restore();
+
+      context.save();
+      context.strokeStyle = "rgba(214,231,220,0.35)";
+      context.lineWidth = 1;
+      context.beginPath();
+      context.moveTo(plot.left, plot.top);
+      context.lineTo(plot.left, plot.bottom);
+      context.lineTo(plot.right, plot.bottom);
+      context.stroke();
+      context.restore();
+
+      context.save();
+      context.fillStyle = "#8fa399";
+      context.font = "800 12px Arial, sans-serif";
+      context.textBaseline = "middle";
+      context.textAlign = "right";
+      yTicks.forEach((tick) => {
+        const label = isRankMode
+          ? `#${tick}`
+          : new Intl.NumberFormat("en", { notation: "compact" }).format(Number(tick));
+        context.fillText(label, plot.left - 10, yToCanvas(tick));
+      });
+
+      const xTickSource = renderedData.filter((point) => numericValue(point.sortValue) !== null);
+      const xTickCount = Math.min(7, xTickSource.length);
+      const xTicks = Array.from({ length: xTickCount }, (_, index) => {
+        const sourceIndex = xTickCount === 1 ? 0 : Math.round((index * (xTickSource.length - 1)) / (xTickCount - 1));
+        return xTickSource[sourceIndex];
+      });
+      context.textAlign = "center";
+      context.textBaseline = "top";
+      xTicks.forEach((point) => {
+        const value = numericValue(point.sortValue);
+        if (value === null) return;
+        context.fillText(formatXTick(value), xToCanvas(value), plot.bottom + 12);
+      });
+
+      context.font = "700 18px Georgia, serif";
+      context.fillText("time", (plot.left + plot.right) / 2, cssHeight - 36);
+      context.save();
+      context.translate(34, (plot.top + plot.bottom) / 2);
+      context.rotate(-Math.PI / 2);
+      context.font = "700 14px Georgia, serif";
+      context.fillText(valueMode === "streams" ? "stream value" : "rank value", 0, 0);
+      context.restore();
+      context.restore();
+
+      segmentSeries.forEach((series) => {
+        const points = renderedData
+          .map((point) => {
+            const x = numericValue(point.sortValue);
+            const y = numericValue(point[series.key]);
+            return x !== null && y !== null ? { x: xToCanvas(x), y: yToCanvas(y) } : null;
+          })
+          .filter((point): point is { x: number; y: number } => point !== null);
+        if (points.length < 2) return;
+
+        const color = COLORS[series.workIndex % COLORS.length];
+        const areaColor = AREA_COLORS[series.workIndex % AREA_COLORS.length];
+        const baseline = yToCanvas(isRankMode ? yMax : 0);
+
+        context.save();
+        context.beginPath();
+        context.moveTo(points[0].x, baseline);
+        points.forEach((point) => context.lineTo(point.x, point.y));
+        context.lineTo(points[points.length - 1].x, baseline);
+        context.closePath();
+        const areaGradient = context.createLinearGradient(0, plot.top, 0, plot.bottom);
+        areaGradient.addColorStop(0, `${areaColor}85`);
+        areaGradient.addColorStop(0.58, `${areaColor}38`);
+        areaGradient.addColorStop(1, `${areaColor}05`);
+        context.fillStyle = areaGradient;
+        context.fill();
+        context.restore();
+
+        context.save();
+        context.shadowColor = `${LINE_SHADOWS[series.workIndex % LINE_SHADOWS.length]}66`;
+        context.shadowBlur = 7;
+        context.shadowOffsetY = 2;
+        context.strokeStyle = color;
+        context.lineWidth = 3.1;
+        context.lineCap = "round";
+        context.lineJoin = "round";
+        context.beginPath();
+        points.forEach((point, index) => {
+          if (index === 0) context.moveTo(point.x, point.y);
+          else context.lineTo(point.x, point.y);
+        });
+        context.stroke();
+        context.restore();
+      });
+
+      if (isRankMode) {
+        playbackMarkers.forEach((marker) => {
+          const x = xToCanvas(markerSortValue(marker.x, timelineMode));
+          const y = yToCanvas(marker.y);
+          const color = colorByWorkId.get(marker.work_id) ?? "#a1a1aa";
+          context.save();
+          context.fillStyle = color;
+          context.strokeStyle = marker.type === "re" ? "#f4fff7" : "#050806";
+          context.lineWidth = marker.type === "re" ? 2.5 : 3.25;
+          context.beginPath();
+          context.arc(x, y, marker.type === "re" ? 6.5 : 7.5, 0, Math.PI * 2);
+          context.fill();
+          context.stroke();
+          context.fillStyle = color;
+          context.font = "800 11px Arial, sans-serif";
+          context.textAlign = "center";
+          context.textBaseline = "bottom";
+          context.fillText(marker.label, x, y - 10);
+          context.restore();
+        });
+      }
+
+      context.save();
+      context.font = "600 13px Georgia, serif";
+      context.textBaseline = "middle";
+      let legendX = plot.left;
+      const legendY = cssHeight - 18;
+      visibleWorks.forEach((work, index) => {
+        const color = COLORS[index % COLORS.length];
+        const title = work.title.length > 28 ? `${work.title.slice(0, 27)}...` : work.title;
+        context.fillStyle = color;
+        context.fillRect(legendX, legendY - 5, 18, 10);
+        context.fillStyle = "#d6e7dc";
+        context.fillText(title, legendX + 26, legendY);
+        legendX += Math.min(260, 52 + title.length * 8);
+      });
+      context.restore();
+
+      const pngBlob = await new Promise<Blob>((resolve, reject) => {
+        canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("PNG export failed."))), "image/png");
+      });
+      const pngUrl = URL.createObjectURL(pngBlob);
+      const link = document.createElement("a");
+      link.href = pngUrl;
+      link.download = `popchart-${platform}-${new Date().toISOString().slice(0, 10)}.png`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(pngUrl);
+    } catch (error) {
+      console.error(error);
+      window.alert("导出图片失败，请稍后再试。");
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   const formatXTick = (value: string | number) => {
     const numeric = Number(value);
     if (!Number.isFinite(numeric)) return `${value}`;
@@ -315,6 +553,14 @@ export default function TrendChart({
             className="rounded-full border border-white/10 bg-white/[0.055] px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-[#d6e7dc] transition hover:border-[#1ed760]/40 hover:bg-[#1ed760]/10 hover:text-white"
           >
             {isExpanded ? "关闭全屏" : "放大查看"}
+          </button>
+          <button
+            type="button"
+            onClick={exportPng}
+            disabled={data.length === 0 || visibleWorks.length === 0 || isExporting}
+            className="rounded-full border border-white/10 bg-white/[0.055] px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-[#d6e7dc] transition hover:border-[#1ed760]/40 hover:bg-[#1ed760]/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {isExporting ? "导出中" : "导出 PNG"}
           </button>
         </div>
       </div>
@@ -381,6 +627,7 @@ export default function TrendChart({
 
       <div className="-mx-3 overflow-x-auto pb-2 sm:mx-0">
       <div
+        ref={chartContainerRef}
         className={`${isExpanded ? "h-[calc(100vh-190px)] min-h-[560px] min-w-[780px]" : "h-[620px] min-h-[620px] min-w-[760px] sm:h-[820px] sm:min-h-[820px] sm:min-w-0"} relative w-full overflow-hidden rounded-[1.1rem] border border-white/10 bg-[#050806] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:rounded-[1.35rem]`}
       >
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.055),transparent_21%),repeating-linear-gradient(0deg,rgba(255,255,255,0.025)_0_1px,transparent_1px_24px)]" />

@@ -257,8 +257,8 @@ def main() -> None:
         raise ValueError("recent.json must contain a date and a non-empty data array.")
 
     current_latest = latest_billboard_date()
-    if current_latest and recent_date < current_latest:
-        print(f"Billboard recent date {recent_date} is older than current {current_latest}; skipping.")
+    if current_latest and recent_date <= current_latest:
+        print(f"Billboard recent date {recent_date} is not newer than current {current_latest}; skipping.")
         return
 
     catalog_path = PUBLIC_DATA_DIR / "billboard_catalog.json"

@@ -87,7 +87,7 @@ jobs:
       - name: Restore cached Spotify raw CSVs from OSS
         run: |
           mkdir -p data/raw/spotify/official
-          ossutil cp -r "oss://$OSS_BUCKET/raw/spotify" data/raw/spotify/official --update || true
+          ossutil cp -r "oss://$OSS_BUCKET/raw/spotify/" data/raw/spotify/official/ --update || true
           find data/raw/spotify/official -type f -name "*.csv" | sort > spotify-raw-before.txt
 
       - name: Download latest Spotify charts and rebuild public data
@@ -99,7 +99,7 @@ jobs:
           if [ -n "${{ github.event.inputs.end }}" ]; then
             EXTRA_ARGS="$EXTRA_ARGS --end ${{ github.event.inputs.end }}"
           fi
-          npm run spotify:update:latest -- --regions global,us --lag-days 2 --chunk-days 2 --headless --storage-state spotify-storage-state.json --verify-build $EXTRA_ARGS
+          npm run spotify:update:latest -- --regions global,us --lag-days 1 --chunk-days 2 --headless --storage-state spotify-storage-state.json --verify-build $EXTRA_ARGS
 
       - name: Sync changed Spotify raw CSVs and public data to OSS
         run: |

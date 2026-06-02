@@ -80,7 +80,7 @@ def build() -> tuple[list[dict], list[dict[str, str]]]:
     if not RAW_DIR.exists():
         raise FileNotFoundError(f"Missing Spotify official raw directory: {RAW_DIR}")
 
-    files = sorted(path for path in RAW_DIR.glob("regional-*-daily-*.csv") if path.name != "download_links.csv")
+    files = sorted(path for path in RAW_DIR.rglob("regional-*-daily-*.csv") if path.name != "download_links.csv")
     if not files:
         raise FileNotFoundError(f"No Spotify official CSV files found in {RAW_DIR}")
 

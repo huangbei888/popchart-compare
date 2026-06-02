@@ -15,6 +15,7 @@ out/
 .spotify-charts-profile/
 spotify-profile.zip
 spotify-storage-state.json
+public/audio/*.mp3
 .tools/
 ossutil_output/
 logs/

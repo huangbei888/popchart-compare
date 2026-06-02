@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ComparisonTable from "@/components/ComparisonTable";
 import CoverArt from "@/components/CoverArt";
 import CrossPlatformChart from "@/components/CrossPlatformChart";
@@ -43,6 +43,7 @@ type CatalogWork = Work & {
 };
 
 const DATA_BASE_URL = (process.env.NEXT_PUBLIC_DATA_BASE_URL ?? "").replace(/\/+$/, "");
+const OLIVIA_AUDIO_URL = "/audio/olivia-rodrigo.mp3";
 
 function dataUrl(path: string) {
   if (/^https?:\/\//i.test(path)) return path;
@@ -166,6 +167,10 @@ function hasPlatformRegion(work: CatalogWork, platform: Platform, region: string
   return Boolean(work.platforms?.includes(platform) && work.regions?.includes(region));
 }
 
+function isSoloOliviaRodrigo(work: Work | undefined) {
+  return normalizeSearchText(work?.artist).replace(/\s+/g, "") === "oliviarodrigo";
+}
+
 export default function Home() {
   const [manualWorks, setManualWorks] = useState<CatalogWork[]>([]);
   const [billboardCatalog, setBillboardCatalog] = useState<CatalogWork[]>([]);
@@ -185,6 +190,34 @@ export default function Home() {
   const [loadingBillboardCatalog, setLoadingBillboardCatalog] = useState(false);
   const [loadingSpotifyCatalog, setLoadingSpotifyCatalog] = useState(false);
   const [loadingEntries, setLoadingEntries] = useState(false);
+  const oliviaAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  const getOliviaAudio = () => {
+    if (!oliviaAudioRef.current) {
+      const audio = new Audio(OLIVIA_AUDIO_URL);
+      audio.loop = true;
+      audio.volume = 0.32;
+      oliviaAudioRef.current = audio;
+    }
+    return oliviaAudioRef.current;
+  };
+
+  const playOliviaAudio = () => {
+    const audio = getOliviaAudio();
+    audio.currentTime = 0;
+    void audio.play().catch((error) => {
+      console.warn("Olivia audio did not start. Put an audio file at public/audio/olivia-rodrigo.mp3.", error);
+    });
+  };
+
+  const stopOliviaAudio = () => {
+    const audio = oliviaAudioRef.current;
+    if (!audio) return;
+    audio.pause();
+    audio.currentTime = 0;
+  };
+
+  useEffect(() => stopOliviaAudio, []);
 
   useEffect(() => {
     let active = true;
@@ -400,10 +433,16 @@ export default function Home() {
   );
 
   const addWork = (workId: string) => {
-    setSelectedWorkIds((current) => (current.includes(workId) || current.length >= 5 ? current : [...current, workId]));
+    const work = allWorks.find((item) => item.work_id === workId);
+    if (selectedWorkIds.includes(workId) || selectedWorkIds.length >= 5) return;
+    if (isSoloOliviaRodrigo(work)) playOliviaAudio();
+    setSelectedWorkIds([...selectedWorkIds, workId]);
   };
   const removeWork = (workId: string) => {
-    setSelectedWorkIds((current) => current.filter((id) => id !== workId));
+    const next = selectedWorkIds.filter((id) => id !== workId);
+    const hasOlivia = next.some((id) => isSoloOliviaRodrigo(allWorks.find((work) => work.work_id === id)));
+    if (!hasOlivia) stopOliviaAudio();
+    setSelectedWorkIds(next);
   };
   const updatePlatform = (value: Platform) => {
     setPlatform(value);
