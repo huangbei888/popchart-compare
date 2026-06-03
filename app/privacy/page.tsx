@@ -19,23 +19,10 @@ export default function PrivacyPage() {
       </section>
 
       <section className="rounded-3xl border border-white/10 bg-white/[0.055] p-6">
-        <h2 className="text-xl font-semibold text-white">AI 走势点评</h2>
-        <div className="mt-4 grid gap-4 text-sm leading-7 text-zinc-300">
-          <p>
-            点击 AI 走势点评时，网站只会把你当前选择歌曲的榜单摘要指标发送给服务端模型接口，例如 peak、debut、latest、
-            Top 10 周数、最大升跌幅和回榜次数。
-          </p>
-          <p>不会发送浏览器 cookie、登录身份或你的私人歌单。当前版本也不要求用户登录。</p>
-          <p>为了控制公开访问成本，AI 接口带有访问频率限制和缓存。相同请求会优先返回缓存结果。</p>
-        </div>
-      </section>
-
-      <section className="rounded-3xl border border-white/10 bg-white/[0.055] p-6">
         <h2 className="text-xl font-semibold text-white">当前限制</h2>
         <ul className="mt-4 grid gap-3 text-sm leading-7 text-zinc-300">
           <li>当前版本聚焦单曲走势，不支持专辑走势。</li>
           <li>Spotify 覆盖范围取决于本地 CSV 数据，不代表完整实时 Spotify 数据库。</li>
-          <li>AI 点评是辅助解读，不应视为官方榜单结论。</li>
         </ul>
       </section>
 
