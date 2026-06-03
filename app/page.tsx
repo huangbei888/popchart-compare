@@ -18,7 +18,7 @@ import {
   mergeWorks,
   normalizeChartData,
 } from "@/lib/chartUtils";
-import type { ChartEntry, Platform, TimelineMode, Work } from "@/lib/types";
+import type { ChartEntry, ChartValueMode, Platform, TimelineMode, Work } from "@/lib/types";
 
 type ChartEntriesIndexItem = {
   platform: Platform;
@@ -185,6 +185,7 @@ export default function Home() {
   const [timelineMode, setTimelineMode] = useState<TimelineMode>("relative");
   const [relativeRangeStart, setRelativeRangeStart] = useState("");
   const [relativeRangeEnd, setRelativeRangeEnd] = useState("");
+  const [chartValueMode, setChartValueMode] = useState<ChartValueMode>("rank");
   const [loadingCatalogs, setLoadingCatalogs] = useState(true);
   const [loadingBillboardCatalog, setLoadingBillboardCatalog] = useState(false);
   const [loadingSpotifyCatalog, setLoadingSpotifyCatalog] = useState(false);
@@ -374,7 +375,7 @@ export default function Home() {
     () => normalizeChartData(chartEntries, { workIds: selectedWorkIds, platform, region: effectiveRegion }),
     [chartEntries, effectiveRegion, platform, selectedWorkIds],
   );
-  const effectiveChartValueMode = "rank";
+  const effectiveChartValueMode: ChartValueMode = platform === "billboard" ? "rank" : chartValueMode;
   const chartData = useMemo(
     () => buildLineChartData(filteredEntries, allWorks, timelineMode, platform, effectiveChartValueMode),
     [allWorks, effectiveChartValueMode, filteredEntries, platform, timelineMode],
@@ -453,6 +454,7 @@ export default function Home() {
     setPlatform(value);
     if (value === "billboard") {
       setRegion("us");
+      setChartValueMode("rank");
     }
   };
 
@@ -527,7 +529,9 @@ export default function Home() {
                 <p className="text-xs font-black uppercase tracking-[0.2em] text-[#1ed760]">Control Deck</p>
                 <h2 className="mt-1 text-lg font-black text-white">控制面板</h2>
               </div>
-              <MetricBadge tone="green">Rank</MetricBadge>
+              <MetricBadge tone={effectiveChartValueMode === "streams" ? "blue" : "green"}>
+                {effectiveChartValueMode === "streams" ? "Streams" : "Rank"}
+              </MetricBadge>
             </div>
 
             <div className="grid gap-4">
@@ -639,6 +643,37 @@ export default function Home() {
                 </div>
                 {platform === "billboard" && timelineMode === "relative" ? (
                   <p className="mt-2 text-xs leading-5 text-[#8fa399]">Billboard 相对时间基于首次进入 Hot 100 的榜周。</p>
+                ) : null}
+              </div>
+
+              <div>
+                <span className="mb-2 block text-sm font-semibold text-[#d6e7dc]">图表指标</span>
+                <div className="grid grid-cols-2 gap-2 rounded-[1.15rem] border border-white/10 bg-[#050806] p-1">
+                  {(["rank", "streams"] as ChartValueMode[]).map((value) => {
+                    const disabled = platform === "billboard" && value === "streams";
+                    return (
+                      <button
+                        key={value}
+                        className={`rounded-[0.9rem] px-3 py-2 text-sm font-black transition ${
+                          effectiveChartValueMode === value
+                            ? "bg-white text-black"
+                            : disabled
+                              ? "cursor-not-allowed text-[#4d5c53]"
+                              : "text-[#a7b8ad] hover:bg-white/[0.07] hover:text-white"
+                        }`}
+                        onClick={() => {
+                          if (!disabled) setChartValueMode(value);
+                        }}
+                        disabled={disabled}
+                        type="button"
+                      >
+                        {value === "rank" ? "排名" : "播放量"}
+                      </button>
+                    );
+                  })}
+                </div>
+                {platform === "billboard" ? (
+                  <p className="mt-2 text-xs leading-5 text-[#8fa399]">Billboard 本地数据没有播放量字段，图表固定展示排名走势。</p>
                 ) : null}
               </div>
 

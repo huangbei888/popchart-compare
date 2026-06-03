@@ -29,10 +29,6 @@ const dash = "—";
 const formatRank = (rank: number | null) => (rank === null ? dash : `#${rank}`);
 const formatDate = (date: string | null) => date ?? dash;
 const formatNumber = (value: number | null | undefined) => (value === null || value === undefined ? dash : value.toString());
-const formatStreams = (streams: number | null) => {
-  if (streams === null) return dash;
-  return new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(streams);
-};
 
 const statusOrder: Record<ChartStatus, number> = {
   Charting: 0,
@@ -189,7 +185,6 @@ export default function ComparisonTable({ metrics, selectedCount }: ComparisonTa
                   <SortButton label="状态" sortKey="status" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
                 </th>
                 <th className="px-4 py-4 font-black">走势</th>
-                <th className="px-4 py-4 font-black">播放量</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.08]">
@@ -249,7 +244,6 @@ export default function ComparisonTable({ metrics, selectedCount }: ComparisonTa
                   <td className="px-4 py-5">
                     <Sparkline data={metric.sparkline} />
                   </td>
-                  <td className="px-4 py-5 font-black text-[#d6e7dc]">{formatStreams(metric.maxStreams)}</td>
                 </tr>
               ))}
             </tbody>
