@@ -261,24 +261,30 @@ export default function Home() {
   }, [platform, spotifyCatalog.length]);
 
   const primeSearchCatalog = () => {
-    if (platform === "billboard") {
-      if (billboardCatalog.length > 0 || loadingBillboardCatalog) return;
-      setLoadingBillboardCatalog(true);
-      fetchJson<CatalogWork[]>("/data/billboard_search_catalog.json", []).then((catalog) => {
-        setBillboardCatalog(catalog);
+    const primeSpotifyForArtwork = () => {
+      if (spotifyCatalog.length > 0 || loadingSpotifyCatalog) return;
+      setLoadingSpotifyCatalog(true);
+      fetchJson<CatalogWork[]>("/data/spotify_search_catalog.json", []).then((catalog) => {
+        setSpotifyCatalog(catalog);
       }).finally(() => {
-        setLoadingBillboardCatalog(false);
+        setLoadingSpotifyCatalog(false);
       });
+    };
+
+    if (platform === "billboard") {
+      primeSpotifyForArtwork();
+      if (billboardCatalog.length === 0 && !loadingBillboardCatalog) {
+        setLoadingBillboardCatalog(true);
+        fetchJson<CatalogWork[]>("/data/billboard_search_catalog.json", []).then((catalog) => {
+          setBillboardCatalog(catalog);
+        }).finally(() => {
+          setLoadingBillboardCatalog(false);
+        });
+      }
       return;
     }
 
-    if (spotifyCatalog.length > 0 || loadingSpotifyCatalog) return;
-    setLoadingSpotifyCatalog(true);
-    fetchJson<CatalogWork[]>("/data/spotify_search_catalog.json", []).then((catalog) => {
-      setSpotifyCatalog(catalog);
-    }).finally(() => {
-      setLoadingSpotifyCatalog(false);
-    });
+    primeSpotifyForArtwork();
   };
 
   const effectiveRegion = platform === "billboard" ? "us" : region;
