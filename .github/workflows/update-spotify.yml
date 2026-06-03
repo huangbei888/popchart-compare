@@ -2,8 +2,10 @@ name: Update Spotify chart data
 
 on:
   schedule:
-    # Spotify daily charts usually lag by at least one day. This runs in the afternoon China time.
-    - cron: "30 7 * * *"
+    # Spotify daily charts usually lag by at least one day.
+    # GitHub scheduled runs can be delayed or dropped, so use multiple
+    # off-peak fallback windows. The update script is idempotent.
+    - cron: "17 7,11,15 * * *"
   workflow_dispatch:
     inputs:
       start:
