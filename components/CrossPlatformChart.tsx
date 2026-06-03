@@ -35,6 +35,21 @@ type SeriesConfig = {
   region: string;
 };
 
+type TooltipPayloadItem = {
+  name?: string | number;
+  value?: string | number | null;
+  color?: string;
+  dataKey?: string | number;
+};
+
+type DedupedTooltipProps = {
+  active?: boolean;
+  label?: string | number;
+  payload?: readonly TooltipPayloadItem[];
+  valueMode: ChartValueMode;
+  timelineMode: TimelineMode;
+};
+
 const SERIES: SeriesConfig[] = [
   {
     key: "billboard_us",
@@ -123,6 +138,44 @@ function formatXAxisTick(value: string | number, timelineMode: TimelineMode) {
   if (!Number.isFinite(numeric)) return `${value}`;
   if (timelineMode === "absolute") return dayjs(numeric).format("YYYY-MM-DD");
   return `Day ${Math.round(numeric)}`;
+}
+
+function formatTooltipValue(value: string | number | null | undefined, valueMode: ChartValueMode) {
+  if (value === null || value === undefined) return "";
+  return valueMode === "rank"
+    ? `#${value}`
+    : new Intl.NumberFormat("en", { maximumFractionDigits: 0 }).format(Number(value));
+}
+
+function DedupedTooltip({ active, label, payload, valueMode, timelineMode }: DedupedTooltipProps) {
+  if (!active || !payload?.length) return null;
+
+  const rows = new Map<string, TooltipPayloadItem>();
+  payload.forEach((item) => {
+    if (item.value === null || item.value === undefined) return;
+    const key = String(item.name ?? item.dataKey ?? "");
+    if (!rows.has(key)) rows.set(key, item);
+  });
+
+  if (rows.size === 0) return null;
+
+  return (
+    <div className="rounded-[14px] border border-white/15 bg-[#050806]/95 px-4 py-3 text-[#f4fff7] shadow-[0_24px_80px_rgba(0,0,0,0.58),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl">
+      <div className="mb-2 text-lg font-black leading-6 text-[#d6e7dc]">{formatXAxisTick(label ?? "", timelineMode)}</div>
+      <div className="grid gap-1 text-base font-black leading-6">
+        {Array.from(rows.entries()).map(([key, item]) => {
+          const series = SERIES.find((candidate) => candidate.key === key);
+          return (
+            <div key={key} className="flex items-baseline gap-2 whitespace-nowrap">
+              <span>{series?.label ?? key}</span>
+              <span className="text-[#8fa399]">:</span>
+              <span>{formatTooltipValue(item.value, valueMode)}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 export default function CrossPlatformChart({
@@ -352,24 +405,15 @@ export default function CrossPlatformChart({
                 width={isRankMode ? 72 : 86}
               />
               <Tooltip
-                contentStyle={{
-                  background: "rgba(5,8,6,0.94)",
-                  border: "1px solid rgba(255,255,255,0.14)",
-                  borderRadius: 14,
-                  color: "#f4fff7",
-                  boxShadow: "0 24px 80px rgba(0,0,0,0.58), inset 0 1px 0 rgba(255,255,255,0.08)",
-                  backdropFilter: "blur(18px)",
-                }}
-                labelStyle={{ color: "#d6e7dc", marginBottom: 8 }}
-                formatter={(value, name) => {
-                  const series = SERIES.find((item) => item.key === name);
-                  const formatted =
-                    valueMode === "rank"
-                      ? `#${value}`
-                      : new Intl.NumberFormat("en", { maximumFractionDigits: 0 }).format(Number(value));
-                  return [formatted, series?.label ?? name];
-                }}
-                labelFormatter={(label) => formatXAxisTick(label, timelineMode)}
+                content={(props) => (
+                  <DedupedTooltip
+                    active={props.active}
+                    label={props.label}
+                    payload={props.payload as unknown as readonly TooltipPayloadItem[] | undefined}
+                    valueMode={valueMode}
+                    timelineMode={timelineMode}
+                  />
+                )}
               />
               <Legend
                 iconType="rect"

@@ -26,9 +26,9 @@ type TrendChartProps = {
   markers: ChartMarker[];
 };
 
-const COLORS = ["#8aaeb6", "#7c996b", "#dfc44f", "#d28c9c", "#5fb6a6"];
-const AREA_COLORS = ["#cfe1e2", "#d8e5ce", "#fff0a6", "#f3cbd2", "#bfe5dc"];
-const LINE_SHADOWS = ["#8aaeb6", "#7c996b", "#dfc44f", "#d28c9c", "#5fb6a6"];
+const COLORS = ["#8aaeb6", "#7c996b", "#dfc44f", "#d28c9c", "#5fb6a6", "#b9a6e3", "#e0a15c", "#8cc7df", "#c8d66b", "#f08a73"];
+const AREA_COLORS = ["#cfe1e2", "#d8e5ce", "#fff0a6", "#f3cbd2", "#bfe5dc", "#dacdf2", "#f0c99f", "#c5e4ef", "#e2eca8", "#f7c0b3"];
+const LINE_SHADOWS = ["#8aaeb6", "#7c996b", "#dfc44f", "#d28c9c", "#5fb6a6", "#b9a6e3", "#e0a15c", "#8cc7df", "#c8d66b", "#f08a73"];
 const SPEED_OPTIONS = [0.5, 1, 2, 4, 8, 16];
 
 type SegmentSeries = {
@@ -39,6 +39,22 @@ type SegmentSeries = {
 };
 
 type ChartPoint = Record<string, string | number | null>;
+
+type TooltipPayloadItem = {
+  name?: string | number;
+  value?: string | number | null;
+  color?: string;
+  dataKey?: string | number;
+};
+
+type DedupedTooltipProps = {
+  active?: boolean;
+  label?: string | number;
+  payload?: readonly TooltipPayloadItem[];
+  works: Work[];
+  valueMode: ChartValueMode;
+  labelFormatter: (value: string | number) => string;
+};
 
 function workIdFromSeriesKey(key: unknown) {
   const value = String(key ?? "");
@@ -103,6 +119,44 @@ function buildSegmentedChartData(
 
 function numericValue(value: string | number | null | undefined) {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function formatTooltipValue(value: string | number | null | undefined, valueMode: ChartValueMode) {
+  if (value === null || value === undefined) return "";
+  return valueMode === "rank"
+    ? `#${value}`
+    : new Intl.NumberFormat("en", { maximumFractionDigits: 0 }).format(Number(value));
+}
+
+function DedupedTooltip({ active, label, payload, works, valueMode, labelFormatter }: DedupedTooltipProps) {
+  if (!active || !payload?.length) return null;
+
+  const rows = new Map<string, TooltipPayloadItem>();
+  payload.forEach((item) => {
+    if (item.value === null || item.value === undefined) return;
+    const workId = workIdFromSeriesKey(item.name ?? item.dataKey);
+    if (!rows.has(workId)) rows.set(workId, item);
+  });
+
+  if (rows.size === 0) return null;
+
+  return (
+    <div className="rounded-[14px] border border-white/15 bg-[#050806]/95 px-4 py-3 text-[#f4fff7] shadow-[0_24px_80px_rgba(0,0,0,0.58),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl">
+      <div className="mb-2 text-lg font-black leading-6 text-[#d6e7dc]">{labelFormatter(label ?? "")}</div>
+      <div className="grid gap-1 text-base font-black leading-6">
+        {Array.from(rows.entries()).map(([workId, item]) => {
+          const work = works.find((candidate) => candidate.work_id === workId);
+          return (
+            <div key={workId} className="flex items-baseline gap-2 whitespace-nowrap">
+              <span>{work?.title ?? workId}</span>
+              <span className="text-[#8fa399]">:</span>
+              <span>{formatTooltipValue(item.value, valueMode)}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 function markerSortValue(x: string, timelineMode: TimelineMode) {
@@ -717,25 +771,16 @@ export default function TrendChart({
                 width={isRankMode ? 72 : 86}
               />
               <Tooltip
-                contentStyle={{
-                  background: "rgba(5,8,6,0.94)",
-                  border: "1px solid rgba(255,255,255,0.14)",
-                  borderRadius: 14,
-                  color: "#f4fff7",
-                  boxShadow: "0 24px 80px rgba(0,0,0,0.58), inset 0 1px 0 rgba(255,255,255,0.08)",
-                  backdropFilter: "blur(18px)",
-                }}
-                labelStyle={{ color: "#d6e7dc", marginBottom: 8 }}
-                formatter={(value, name) => {
-                  const workId = workIdFromSeriesKey(name);
-                  const work = works.find((item) => item.work_id === workId);
-                  const formatted =
-                    valueMode === "rank"
-                      ? `#${value}`
-                      : new Intl.NumberFormat("en", { maximumFractionDigits: 0 }).format(Number(value));
-                  return [formatted, work?.title ?? workId];
-                }}
-                labelFormatter={(label) => formatXTick(label)}
+                content={(props) => (
+                  <DedupedTooltip
+                    active={props.active}
+                    label={props.label}
+                    payload={props.payload as unknown as readonly TooltipPayloadItem[] | undefined}
+                    works={works}
+                    valueMode={valueMode}
+                    labelFormatter={(value) => formatXTick(value)}
+                  />
+                )}
               />
               <Legend
                 iconType="rect"
