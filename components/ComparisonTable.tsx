@@ -4,10 +4,11 @@ import { useMemo, useState } from "react";
 import CoverArt from "@/components/CoverArt";
 import MetricBadge from "@/components/MetricBadge";
 import Sparkline from "@/components/Sparkline";
-import type { ChartMetric, ChartStatus } from "@/lib/types";
+import type { ChartMetric, ChartStatus, Platform } from "@/lib/types";
 
 type ComparisonTableProps = {
   metrics: ChartMetric[];
+  platform: Platform;
   selectedCount: number;
 };
 
@@ -91,11 +92,12 @@ function SortButton({
   );
 }
 
-export default function ComparisonTable({ metrics, selectedCount }: ComparisonTableProps) {
+export default function ComparisonTable({ metrics, platform, selectedCount }: ComparisonTableProps) {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("All");
   const [sortKey, setSortKey] = useState<SortKey>("peakRank");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const missingCount = Math.max(0, selectedCount - metrics.length);
+  const entryUnit = platform === "spotify" ? "天" : "周";
 
   const filteredMetrics = useMemo(() => {
     const rows = statusFilter === "All" ? metrics : metrics.filter((metric) => metric.status === statusFilter);
@@ -170,9 +172,9 @@ export default function ComparisonTable({ metrics, selectedCount }: ComparisonTa
                 </th>
                 <th className="px-4 py-4 font-black">
                   <div className="flex flex-wrap gap-1">
-                    <SortButton label="在榜周数" sortKey="totalEntries" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
-                    <SortButton label="Top 1 周数" sortKey="weeksAtNumberOne" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
-                    <SortButton label="Top 10 周数" sortKey="weeksInTop10" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
+                    <SortButton label={`在榜${entryUnit}数`} sortKey="totalEntries" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
+                    <SortButton label={`Top 1 ${entryUnit}数`} sortKey="weeksAtNumberOne" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
+                    <SortButton label={`Top 10 ${entryUnit}数`} sortKey="weeksInTop10" activeKey={sortKey} direction={sortDirection} onSort={onSort} />
                   </div>
                 </th>
                 <th className="px-4 py-4 font-black">
@@ -222,11 +224,11 @@ export default function ComparisonTable({ metrics, selectedCount }: ComparisonTa
                     </div>
                   </td>
                   <td className="px-4 py-5">
-                    <div className="font-black text-white">{metric.totalEntries} 周在榜</div>
+                    <div className="font-black text-white">{metric.totalEntries} {entryUnit}在榜</div>
                     <div className="mt-1 text-xs text-[#8fa399]">累计在榜 {formatNumber(metric.weeksOnChart)} 期</div>
                     <div className="mt-2 flex flex-wrap gap-2">
-                      <MetricBadge tone={metric.weeksAtNumberOne > 0 ? "gold" : "gray"}>Top 1 {metric.weeksAtNumberOne} 周</MetricBadge>
-                      <MetricBadge tone={metric.weeksInTop10 > 0 ? "green" : "gray"}>Top 10 {metric.weeksInTop10} 周</MetricBadge>
+                      <MetricBadge tone={metric.weeksAtNumberOne > 0 ? "gold" : "gray"}>Top 1 {metric.weeksAtNumberOne} {entryUnit}</MetricBadge>
+                      <MetricBadge tone={metric.weeksInTop10 > 0 ? "green" : "gray"}>Top 10 {metric.weeksInTop10} {entryUnit}</MetricBadge>
                     </div>
                   </td>
                   <td className="px-4 py-5">

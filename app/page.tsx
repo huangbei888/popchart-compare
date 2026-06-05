@@ -749,7 +749,7 @@ export default function Home() {
         timelineMode={timelineMode}
       />
 
-      <ComparisonTable metrics={metrics} selectedCount={selectedWorkIds.length} />
+      <ComparisonTable metrics={metrics} platform={platform} selectedCount={selectedWorkIds.length} />
 
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 py-6 text-sm text-[#6f8178]">
         <span>PopChart Compare 使用本地处理后的榜单数据。</span>
