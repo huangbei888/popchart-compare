@@ -1,13 +1,13 @@
 {
-  "version": "2026-06-23T13:57:31Z",
-  "generated_at": "2026-06-23T13:57:31Z",
+  "version": "2026-06-24T09:37:14Z",
+  "generated_at": "2026-06-24T09:37:14Z",
   "datasets": [
     {
       "platform": "billboard",
       "region": "us",
-      "entries": 354505,
+      "entries": 354605,
       "first_date": "1958-08-04",
-      "latest_date": "2026-06-20"
+      "latest_date": "2026-06-27"
     },
     {
       "platform": "spotify",
