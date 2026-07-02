@@ -1,6 +1,6 @@
 {
-  "version": "2026-07-01T13:49:55Z",
-  "generated_at": "2026-07-01T13:49:55Z",
+  "version": "2026-07-02T10:21:35Z",
+  "generated_at": "2026-07-02T10:21:35Z",
   "datasets": [
     {
       "platform": "billboard",
@@ -12,20 +12,20 @@
     {
       "platform": "spotify",
       "region": "global",
-      "entries": 619828,
+      "entries": 620028,
       "first_date": "2018-01-01",
-      "latest_date": "2026-06-29"
+      "latest_date": "2026-06-30"
     },
     {
       "platform": "spotify",
       "region": "us",
-      "entries": 620220,
+      "entries": 620420,
       "first_date": "2018-01-01",
-      "latest_date": "2026-06-29"
+      "latest_date": "2026-06-30"
     }
   ],
   "spotify_latest_dates": {
-    "global": "2026-06-29",
-    "us": "2026-06-29"
+    "global": "2026-06-30",
+    "us": "2026-06-30"
   }
 }
