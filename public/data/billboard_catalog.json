@@ -13969,13 +13969,13 @@
     "release_date": "2026-03-14",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-03-14",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 21,
     "debut_rank": 21,
-    "total_chart_entries": 17,
+    "total_chart_entries": 18,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 17
+    "best_weeks_on_chart": 18
   },
   {
     "work_id": "alex_warren__fine_place_to_die",
@@ -22828,13 +22828,13 @@
     "release_date": "2026-06-13",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-13",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 1,
     "debut_rank": 1,
-    "total_chart_entries": 4,
+    "total_chart_entries": 5,
     "weeks_at_number_one": 1,
-    "weeks_in_top_10": 4,
-    "best_weeks_on_chart": 4,
+    "weeks_in_top_10": 5,
+    "best_weeks_on_chart": 5,
     "work_id": "ariana_grande__hate_that_i_made_you_love_me"
   },
   {
@@ -31910,13 +31910,13 @@
     "release_date": "2026-07-04",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-07-04",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 89,
     "debut_rank": 89,
-    "total_chart_entries": 1,
+    "total_chart_entries": 2,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 1,
+    "best_weeks_on_chart": 2,
     "work_id": "bailey_zimmerman__chevy_silverado"
   },
   {
@@ -37065,13 +37065,13 @@
     "release_date": "2026-02-28",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-02-28",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 17,
     "debut_rank": 66,
-    "total_chart_entries": 19,
+    "total_chart_entries": 20,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 19
+    "best_weeks_on_chart": 20
   },
   {
     "work_id": "bella_poarch__build_a_bitch",
@@ -38048,6 +38048,22 @@
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
     "best_weeks_on_chart": 32
+  },
+  {
+    "type": "single",
+    "title": "The Time Of My Life",
+    "artist": "Benson Boone",
+    "release_date": "2026-07-11",
+    "release_date_source": "billboard_debut",
+    "first_chart_date": "2026-07-11",
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 60,
+    "debut_rank": 60,
+    "total_chart_entries": 1,
+    "weeks_at_number_one": 0,
+    "weeks_in_top_10": 0,
+    "best_weeks_on_chart": 1,
+    "work_id": "benson_boone__the_time_of_my_life"
   },
   {
     "work_id": "bent_fabric_and_his_piano__alley_cat",
@@ -59813,13 +59829,13 @@
     "release_date": "2026-03-28",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-03-28",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 37,
     "debut_rank": 45,
-    "total_chart_entries": 15,
+    "total_chart_entries": 16,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 15
+    "best_weeks_on_chart": 16
   },
   {
     "work_id": "bossman_dlow__mr_pot_scraper",
@@ -68611,13 +68627,13 @@
     "release_date": "2026-01-24",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-01-24",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 1,
     "debut_rank": 1,
-    "total_chart_entries": 24,
+    "total_chart_entries": 25,
     "weeks_at_number_one": 3,
-    "weeks_in_top_10": 21,
-    "best_weeks_on_chart": 24
+    "weeks_in_top_10": 22,
+    "best_weeks_on_chart": 25
   },
   {
     "work_id": "bruno_mars__it_will_rain",
@@ -68727,13 +68743,13 @@
     "release_date": "2026-03-14",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-03-14",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 4,
     "debut_rank": 4,
-    "total_chart_entries": 17,
+    "total_chart_entries": 18,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 2,
-    "best_weeks_on_chart": 17
+    "best_weeks_on_chart": 18
   },
   {
     "work_id": "bruno_mars__runaway_baby",
@@ -70045,13 +70061,13 @@
     "release_date": "2026-04-04",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-04-04",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 1,
     "debut_rank": 1,
-    "total_chart_entries": 14,
+    "total_chart_entries": 15,
     "weeks_at_number_one": 1,
     "weeks_in_top_10": 4,
-    "best_weeks_on_chart": 14
+    "best_weeks_on_chart": 15
   },
   {
     "work_id": "bts__take_two",
@@ -73020,13 +73036,13 @@
     "release_date": "2026-06-20",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-20",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 96,
     "debut_rank": 96,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "cameron_whitcomb__kingdom_of_fear"
   },
   {
@@ -93061,13 +93077,13 @@
     "release_date": "2026-05-02",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-02",
-    "latest_chart_date": "2026-05-02",
-    "peak_rank": 84,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 80,
     "debut_rank": 84,
-    "total_chart_entries": 1,
+    "total_chart_entries": 2,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 1
+    "best_weeks_on_chart": 2
   },
   {
     "work_id": "cody_johnson__on_my_way_to_you",
@@ -96875,13 +96891,13 @@
     "release_date": "2026-05-02",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-02",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 93,
     "debut_rank": 97,
-    "total_chart_entries": 4,
+    "total_chart_entries": 5,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 4
+    "best_weeks_on_chart": 5
   },
   {
     "work_id": "corey_kent__this_heart",
@@ -96923,13 +96939,13 @@
     "release_date": "2026-03-14",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-03-14",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 84,
     "debut_rank": 90,
-    "total_chart_entries": 9,
+    "total_chart_entries": 10,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 9
+    "best_weeks_on_chart": 10
   },
   {
     "work_id": "corina__summertime_summertime",
@@ -101295,13 +101311,13 @@
     "release_date": "2026-02-07",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-02-07",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 26,
     "debut_rank": 78,
-    "total_chart_entries": 21,
+    "total_chart_entries": 22,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 21
+    "best_weeks_on_chart": 22
   },
   {
     "work_id": "dababy__practice",
@@ -105557,13 +105573,13 @@
     "release_date": "2026-02-07",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-02-07",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 49,
     "debut_rank": 89,
-    "total_chart_entries": 21,
+    "total_chart_entries": 22,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 21
+    "best_weeks_on_chart": 22
   },
   {
     "work_id": "dave_dee_dozy_beaky_mick_and_tich__zabadak",
@@ -114701,13 +114717,13 @@
     "release_date": "2026-04-04",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-04-04",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 33,
     "debut_rank": 91,
-    "total_chart_entries": 14,
+    "total_chart_entries": 15,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 14
+    "best_weeks_on_chart": 15
   },
   {
     "work_id": "dexys_midnight_runners__come_on_eileen",
@@ -122649,13 +122665,13 @@
     "release_date": "2026-02-21",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-02-21",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 16,
     "debut_rank": 97,
-    "total_chart_entries": 20,
+    "total_chart_entries": 21,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 20
+    "best_weeks_on_chart": 21
   },
   {
     "work_id": "dominic_fike__misses",
@@ -122697,13 +122713,13 @@
     "release_date": "2026-03-07",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-03-07",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 32,
     "debut_rank": 85,
-    "total_chart_entries": 18,
+    "total_chart_entries": 19,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 18
+    "best_weeks_on_chart": 19
   },
   {
     "work_id": "domino__getto_jam",
@@ -123913,13 +123929,13 @@
     "release_date": "2026-02-14",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-02-14",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 15,
     "debut_rank": 17,
-    "total_chart_entries": 21,
+    "total_chart_entries": 22,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 21
+    "best_weeks_on_chart": 22
   },
   {
     "work_id": "don_toliver__excavator",
@@ -127576,13 +127592,13 @@
     "release_date": "2026-05-30",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-30",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 9,
     "debut_rank": 9,
-    "total_chart_entries": 6,
+    "total_chart_entries": 7,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 1,
-    "best_weeks_on_chart": 6,
+    "best_weeks_on_chart": 7,
     "work_id": "drake__2_hard_4_the_radio"
   },
   {
@@ -128890,13 +128906,13 @@
     "release_date": "2026-05-30",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-30",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 1,
     "debut_rank": 1,
-    "total_chart_entries": 6,
+    "total_chart_entries": 7,
     "weeks_at_number_one": 2,
-    "weeks_in_top_10": 6,
-    "best_weeks_on_chart": 6,
+    "weeks_in_top_10": 7,
+    "best_weeks_on_chart": 7,
     "work_id": "drake__janice_stfu"
   },
   {
@@ -129226,13 +129242,13 @@
     "release_date": "2026-05-30",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-30",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 6,
     "debut_rank": 6,
-    "total_chart_entries": 6,
+    "total_chart_entries": 7,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 1,
-    "best_weeks_on_chart": 6,
+    "best_weeks_on_chart": 7,
     "work_id": "drake__national_treasures"
   },
   {
@@ -129516,13 +129532,13 @@
     "release_date": "2026-05-30",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-30",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 11,
     "debut_rank": 11,
-    "total_chart_entries": 6,
+    "total_chart_entries": 7,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 6,
+    "best_weeks_on_chart": 7,
     "work_id": "drake__plot_twist"
   },
   {
@@ -129788,13 +129804,13 @@
     "release_date": "2026-05-30",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-30",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 4,
     "debut_rank": 4,
-    "total_chart_entries": 6,
+    "total_chart_entries": 7,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 3,
-    "best_weeks_on_chart": 6,
+    "best_weeks_on_chart": 7,
     "work_id": "drake__shabang"
   },
   {
@@ -130333,13 +130349,13 @@
     "release_date": "2025-07-19",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2025-07-19",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 2,
     "debut_rank": 2,
-    "total_chart_entries": 18,
+    "total_chart_entries": 19,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 2,
-    "best_weeks_on_chart": 18
+    "best_weeks_on_chart": 19
   },
   {
     "work_id": "drake__what_would_pluto_do",
@@ -130396,13 +130412,13 @@
     "release_date": "2026-05-30",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-30",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 3,
     "debut_rank": 3,
-    "total_chart_entries": 6,
+    "total_chart_entries": 7,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 2,
-    "best_weeks_on_chart": 6,
+    "best_weeks_on_chart": 7,
     "work_id": "drake__whisper_my_name"
   },
   {
@@ -130988,13 +131004,13 @@
     "release_date": "2026-05-30",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-30",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 12,
     "debut_rank": 12,
-    "total_chart_entries": 6,
+    "total_chart_entries": 7,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 6,
+    "best_weeks_on_chart": 7,
     "work_id": "drake_featuring_21_savage__b_s_on_the_table"
   },
   {
@@ -131214,13 +131230,13 @@
     "release_date": "2026-05-30",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-30",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 2,
     "debut_rank": 2,
-    "total_chart_entries": 6,
+    "total_chart_entries": 7,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 2,
-    "best_weeks_on_chart": 6,
+    "best_weeks_on_chart": 7,
     "work_id": "drake_featuring_future_molly_santana__ran_to_atlanta"
   },
   {
@@ -131646,13 +131662,13 @@
     "release_date": "2026-05-30",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-30",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 34,
     "debut_rank": 34,
-    "total_chart_entries": 6,
+    "total_chart_entries": 7,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 6,
+    "best_weeks_on_chart": 7,
     "work_id": "drake_featuring_loe_shimmy__i_m_spent"
   },
   {
@@ -140487,13 +140503,13 @@
     "release_date": "2026-02-28",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-02-28",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 2,
     "debut_rank": 18,
-    "total_chart_entries": 19,
+    "total_chart_entries": 20,
     "weeks_at_number_one": 0,
-    "weeks_in_top_10": 11,
-    "best_weeks_on_chart": 19
+    "weeks_in_top_10": 12,
+    "best_weeks_on_chart": 20
   },
   {
     "work_id": "ella_langley__bottom_of_your_boots",
@@ -140503,13 +140519,13 @@
     "release_date": "2026-04-25",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-04-25",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 20,
     "debut_rank": 20,
-    "total_chart_entries": 11,
+    "total_chart_entries": 12,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 11
+    "best_weeks_on_chart": 12
   },
   {
     "work_id": "ella_langley__broken",
@@ -140535,13 +140551,13 @@
     "release_date": "2025-11-01",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2025-11-01",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 1,
     "debut_rank": 39,
-    "total_chart_entries": 36,
-    "weeks_at_number_one": 11,
-    "weeks_in_top_10": 26,
-    "best_weeks_on_chart": 36
+    "total_chart_entries": 37,
+    "weeks_at_number_one": 12,
+    "weeks_in_top_10": 27,
+    "best_weeks_on_chart": 37
   },
   {
     "work_id": "ella_langley__dandelion",
@@ -140631,13 +140647,13 @@
     "release_date": "2026-04-04",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-04-04",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 21,
     "debut_rank": 55,
-    "total_chart_entries": 14,
+    "total_chart_entries": 15,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 14
+    "best_weeks_on_chart": 15
   },
   {
     "work_id": "ella_langley__low_lights",
@@ -140759,13 +140775,13 @@
     "release_date": "2026-05-09",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-09",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 7,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 6,
     "debut_rank": 7,
-    "total_chart_entries": 9,
+    "total_chart_entries": 10,
     "weeks_at_number_one": 0,
-    "weeks_in_top_10": 5,
-    "best_weeks_on_chart": 9
+    "weeks_in_top_10": 6,
+    "best_weeks_on_chart": 10
   },
   {
     "work_id": "ella_langley_featuring_riley_green__you_look_like_you_love_me",
@@ -151727,13 +151743,13 @@
     "release_date": "2026-05-16",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-16",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 67,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 61,
     "debut_rank": 97,
-    "total_chart_entries": 7,
+    "total_chart_entries": 8,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 7
+    "best_weeks_on_chart": 8
   },
   {
     "work_id": "fabian__about_this_thing_called_love",
@@ -155024,13 +155040,13 @@
     "release_date": "2026-06-20",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-20",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 63,
     "debut_rank": 66,
-    "total_chart_entries": 3,
+    "total_chart_entries": 4,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 3,
+    "best_weeks_on_chart": 4,
     "work_id": "fenix_flexin__rubberz"
   },
   {
@@ -166200,6 +166216,22 @@
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
     "best_weeks_on_chart": 1
+  },
+  {
+    "type": "single",
+    "title": "Radio",
+    "artist": "Future",
+    "release_date": "2026-07-11",
+    "release_date_source": "billboard_debut",
+    "first_chart_date": "2026-07-11",
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 68,
+    "debut_rank": 68,
+    "total_chart_entries": 1,
+    "weeks_at_number_one": 0,
+    "weeks_in_top_10": 0,
+    "best_weeks_on_chart": 1,
+    "work_id": "future__radio"
   },
   {
     "work_id": "future__ready_to_cook_up",
@@ -183176,13 +183208,13 @@
     "release_date": "2026-05-30",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-30",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 42,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 34,
     "debut_rank": 48,
-    "total_chart_entries": 6,
+    "total_chart_entries": 7,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 6,
+    "best_weeks_on_chart": 7,
     "work_id": "gracie_abrams__hit_the_wall"
   },
   {
@@ -183200,6 +183232,22 @@
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
     "best_weeks_on_chart": 21
+  },
+  {
+    "type": "single",
+    "title": "Look At My Life",
+    "artist": "Gracie Abrams",
+    "release_date": "2026-07-11",
+    "release_date_source": "billboard_debut",
+    "first_chart_date": "2026-07-11",
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 54,
+    "debut_rank": 54,
+    "total_chart_entries": 1,
+    "weeks_at_number_one": 0,
+    "weeks_in_top_10": 0,
+    "best_weeks_on_chart": 1,
+    "work_id": "gracie_abrams__look_at_my_life"
   },
   {
     "work_id": "gracie_abrams__risk",
@@ -188763,13 +188811,13 @@
     "release_date": "2026-02-14",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-02-14",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 31,
     "debut_rank": 31,
-    "total_chart_entries": 21,
+    "total_chart_entries": 22,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 21
+    "best_weeks_on_chart": 22
   },
   {
     "work_id": "harlow_wilcox_and_the_oakies__groovy_grubworm",
@@ -189243,13 +189291,13 @@
     "release_date": "2026-03-21",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-03-21",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 4,
     "debut_rank": 4,
-    "total_chart_entries": 16,
+    "total_chart_entries": 17,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 2,
-    "best_weeks_on_chart": 16
+    "best_weeks_on_chart": 17
   },
   {
     "work_id": "harry_styles__aperture",
@@ -210767,13 +210815,13 @@
     "release_date": "2026-04-25",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-04-25",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 47,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 36,
     "debut_rank": 96,
-    "total_chart_entries": 11,
+    "total_chart_entries": 12,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 11
+    "best_weeks_on_chart": 12
   },
   {
     "work_id": "jason_aldean__fly_over_states",
@@ -237245,13 +237293,13 @@
     "release_date": "2026-04-18",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-04-18",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 52,
     "debut_rank": 89,
-    "total_chart_entries": 12,
+    "total_chart_entries": 13,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 12
+    "best_weeks_on_chart": 13
   },
   {
     "work_id": "josh_ross__single_again",
@@ -241729,13 +241777,13 @@
     "release_date": "2025-09-20",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2025-09-20",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 66,
     "debut_rank": 66,
-    "total_chart_entries": 3,
+    "total_chart_entries": 4,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 3
+    "best_weeks_on_chart": 4
   },
   {
     "work_id": "justin_bieber__that_should_be_me",
@@ -243800,13 +243848,13 @@
     "release_date": "2026-06-13",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-13",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 59,
     "debut_rank": 83,
-    "total_chart_entries": 4,
+    "total_chart_entries": 5,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 4,
+    "best_weeks_on_chart": 5,
     "work_id": "kacey_musgraves__mexico_honey"
   },
   {
@@ -244064,6 +244112,22 @@
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 5,
     "best_weeks_on_chart": 9
+  },
+  {
+    "type": "single",
+    "title": "No Need For Leavin'",
+    "artist": "Kameron Marlowe",
+    "release_date": "2026-07-11",
+    "release_date_source": "billboard_debut",
+    "first_chart_date": "2026-07-11",
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 99,
+    "debut_rank": 99,
+    "total_chart_entries": 1,
+    "weeks_at_number_one": 0,
+    "weeks_in_top_10": 0,
+    "best_weeks_on_chart": 1,
+    "work_id": "kameron_marlowe__no_need_for_leavin"
   },
   {
     "work_id": "kandi__don_t_think_i_m_not",
@@ -244361,13 +244425,13 @@
     "release_date": "2026-03-28",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-03-28",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 73,
     "debut_rank": 85,
-    "total_chart_entries": 11,
+    "total_chart_entries": 12,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 11
+    "best_weeks_on_chart": 12
   },
   {
     "work_id": "kane_brown__worldwide_beautiful",
@@ -252320,13 +252384,13 @@
     "release_date": "2026-07-04",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-07-04",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 100,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 95,
     "debut_rank": 100,
-    "total_chart_entries": 1,
+    "total_chart_entries": 2,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 1,
+    "best_weeks_on_chart": 2,
     "work_id": "kenny_chesney__carry_on"
   },
   {
@@ -262268,13 +262332,13 @@
     "release_date": "2026-06-20",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-20",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 80,
     "debut_rank": 80,
-    "total_chart_entries": 3,
+    "total_chart_entries": 4,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 3,
+    "best_weeks_on_chart": 4,
     "work_id": "lainey_wilson_john_mayer__phone_keys_wallet"
   },
   {
@@ -264588,13 +264652,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 38,
     "debut_rank": 38,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "le_sserafim_illit_katseye__iconic_by_mistake"
   },
   {
@@ -286795,13 +286859,13 @@
     "release_date": "2026-02-28",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-02-28",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 12,
     "debut_rank": 15,
-    "total_chart_entries": 19,
+    "total_chart_entries": 20,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 19
+    "best_weeks_on_chart": 20
   },
   {
     "work_id": "luke_combs__beautiful_crazy",
@@ -287131,13 +287195,13 @@
     "release_date": "2026-04-04",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-04-04",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 46,
     "debut_rank": 46,
-    "total_chart_entries": 13,
+    "total_chart_entries": 14,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 13
+    "best_weeks_on_chart": 14
   },
   {
     "work_id": "luke_combs__she_got_the_best_of_me",
@@ -287179,13 +287243,13 @@
     "release_date": "2026-01-24",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-01-24",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 11,
     "debut_rank": 17,
-    "total_chart_entries": 24,
+    "total_chart_entries": 25,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 24
+    "best_weeks_on_chart": 25
   },
   {
     "work_id": "luke_combs__the_kind_of_love_we_make",
@@ -289755,13 +289819,13 @@
     "release_date": "2026-05-23",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-23",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 26,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 25,
     "debut_rank": 60,
-    "total_chart_entries": 7,
+    "total_chart_entries": 8,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 7
+    "best_weeks_on_chart": 8
   },
   {
     "work_id": "maceo_and_the_macks__parrty_part_i",
@@ -291935,13 +291999,13 @@
     "release_date": "2026-03-14",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-03-14",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 22,
     "debut_rank": 95,
-    "total_chart_entries": 17,
+    "total_chart_entries": 18,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 17
+    "best_weeks_on_chart": 18
   },
   {
     "work_id": "malcolm_todd__i_saw_your_face",
@@ -303087,13 +303151,13 @@
     "release_date": "2025-11-08",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2025-11-08",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 32,
     "debut_rank": 64,
-    "total_chart_entries": 30,
+    "total_chart_entries": 31,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 30
+    "best_weeks_on_chart": 31
   },
   {
     "work_id": "megan_moroney__cloud_9",
@@ -307590,13 +307654,13 @@
     "release_date": "2026-06-06",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-06",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 26,
     "debut_rank": 30,
-    "total_chart_entries": 5,
+    "total_chart_entries": 6,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 5,
+    "best_weeks_on_chart": 6,
     "work_id": "michael_jackson__chicago"
   },
   {
@@ -307687,13 +307751,13 @@
     "release_date": "1983-07-23",
     "release_date_source": "billboard_debut",
     "first_chart_date": "1983-07-23",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 7,
     "debut_rank": 48,
-    "total_chart_entries": 22,
+    "total_chart_entries": 23,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 4,
-    "best_weeks_on_chart": 22
+    "best_weeks_on_chart": 23
   },
   {
     "work_id": "michael_jackson__i_wanna_be_where_you_are",
@@ -315775,13 +315839,13 @@
     "release_date": "2025-05-31",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2025-05-31",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 22,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 21,
     "debut_rank": 48,
-    "total_chart_entries": 20,
+    "total_chart_entries": 21,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 20
+    "best_weeks_on_chart": 21
   },
   {
     "work_id": "morgan_wallen__drinking_til_it_does",
@@ -330473,13 +330537,13 @@
     "release_date": "2026-05-09",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-09",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 9,
     "debut_rank": 9,
-    "total_chart_entries": 9,
+    "total_chart_entries": 10,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 1,
-    "best_weeks_on_chart": 9
+    "best_weeks_on_chart": 10
   },
   {
     "work_id": "noah_kahan__downfall",
@@ -330585,13 +330649,13 @@
     "release_date": "2026-05-09",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-09",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 56,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 52,
     "debut_rank": 79,
-    "total_chart_entries": 9,
+    "total_chart_entries": 10,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 9
+    "best_weeks_on_chart": 10
   },
   {
     "work_id": "noah_kahan__paid_time_off",
@@ -330681,13 +330745,13 @@
     "release_date": "2026-02-14",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-02-14",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 6,
     "debut_rank": 6,
-    "total_chart_entries": 21,
+    "total_chart_entries": 22,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 1,
-    "best_weeks_on_chart": 21
+    "best_weeks_on_chart": 22
   },
   {
     "work_id": "noah_kahan__we_go_way_back",
@@ -330713,13 +330777,13 @@
     "release_date": "2026-05-09",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-09",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 26,
     "debut_rank": 26,
-    "total_chart_entries": 9,
+    "total_chart_entries": 10,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 9
+    "best_weeks_on_chart": 10
   },
   {
     "work_id": "noah_kahan__you_re_gonna_go_far",
@@ -333241,13 +333305,13 @@
     "release_date": "2025-09-06",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2025-09-06",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 2,
     "debut_rank": 82,
-    "total_chart_entries": 44,
+    "total_chart_entries": 45,
     "weeks_at_number_one": 0,
-    "weeks_in_top_10": 31,
-    "best_weeks_on_chart": 44
+    "weeks_in_top_10": 32,
+    "best_weeks_on_chart": 45
   },
   {
     "work_id": "olivia_dean__nice_to_each_other",
@@ -333273,13 +333337,13 @@
     "release_date": "2025-10-11",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2025-10-11",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 5,
     "debut_rank": 98,
-    "total_chart_entries": 39,
+    "total_chart_entries": 40,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 12,
-    "best_weeks_on_chart": 39
+    "best_weeks_on_chart": 40
   },
   {
     "work_id": "olivia_dean__the_christmas_song",
@@ -333916,13 +333980,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 16,
     "debut_rank": 16,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "olivia_rodrigo__begged"
   },
   {
@@ -333964,13 +334028,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 27,
     "debut_rank": 27,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "olivia_rodrigo__cigarette_smoke"
   },
   {
@@ -334015,13 +334079,13 @@
     "release_date": "2026-05-02",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-02",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 1,
     "debut_rank": 1,
-    "total_chart_entries": 10,
+    "total_chart_entries": 11,
     "weeks_at_number_one": 1,
-    "weeks_in_top_10": 6,
-    "best_weeks_on_chart": 10
+    "weeks_in_top_10": 7,
+    "best_weeks_on_chart": 11
   },
   {
     "work_id": "olivia_rodrigo__enough_for_you",
@@ -334046,13 +334110,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 20,
     "debut_rank": 20,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "olivia_rodrigo__expectations"
   },
   {
@@ -334144,13 +334208,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 9,
     "debut_rank": 9,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 1,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "olivia_rodrigo__honeybee"
   },
   {
@@ -334208,13 +334272,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 21,
     "debut_rank": 21,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "olivia_rodrigo__less"
   },
   {
@@ -334256,13 +334320,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 12,
     "debut_rank": 12,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "olivia_rodrigo__maggots_for_brains"
   },
   {
@@ -334288,13 +334352,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 15,
     "debut_rank": 15,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "olivia_rodrigo__my_way"
   },
   {
@@ -334336,13 +334400,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 25,
     "debut_rank": 25,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "olivia_rodrigo__purple"
   },
   {
@@ -334400,13 +334464,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 3,
     "debut_rank": 3,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 2,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "olivia_rodrigo__stupid_song"
   },
   {
@@ -334432,13 +334496,13 @@
     "release_date": "2026-06-06",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-06",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 5,
     "debut_rank": 5,
-    "total_chart_entries": 5,
+    "total_chart_entries": 6,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 2,
-    "best_weeks_on_chart": 5,
+    "best_weeks_on_chart": 6,
     "work_id": "olivia_rodrigo__the_cure"
   },
   {
@@ -334480,13 +334544,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 19,
     "debut_rank": 19,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "olivia_rodrigo__u_me_3"
   },
   {
@@ -334514,13 +334578,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 17,
     "debut_rank": 17,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "olivia_rodrigo_robert_smith__what_s_wrong_with_me"
   },
   {
@@ -351253,13 +351317,13 @@
     "release_date": "2026-01-17",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-01-17",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 6,
     "debut_rank": 100,
-    "total_chart_entries": 25,
+    "total_chart_entries": 26,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 7,
-    "best_weeks_on_chart": 25
+    "best_weeks_on_chart": 26
   },
   {
     "work_id": "pips__every_beat_of_my_heart",
@@ -372555,13 +372619,13 @@
     "release_date": "2026-02-07",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-02-07",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 24,
     "debut_rank": 66,
-    "total_chart_entries": 21,
+    "total_chart_entries": 22,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 21
+    "best_weeks_on_chart": 22
   },
   {
     "work_id": "riley_green__i_wish_grandpas_never_died",
@@ -372587,13 +372651,13 @@
     "release_date": "2026-05-02",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-02",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 70,
     "debut_rank": 93,
-    "total_chart_entries": 7,
+    "total_chart_entries": 8,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 7
+    "best_weeks_on_chart": 8
   },
   {
     "work_id": "riley_green__there_was_this_girl",
@@ -377220,6 +377284,22 @@
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
     "best_weeks_on_chart": 6
+  },
+  {
+    "type": "single",
+    "title": "Piece Of Your Love",
+    "artist": "Rod Wave",
+    "release_date": "2026-07-11",
+    "release_date_source": "billboard_debut",
+    "first_chart_date": "2026-07-11",
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 69,
+    "debut_rank": 69,
+    "total_chart_entries": 1,
+    "weeks_at_number_one": 0,
+    "weeks_in_top_10": 0,
+    "best_weeks_on_chart": 1,
+    "work_id": "rod_wave__piece_of_your_love"
   },
   {
     "work_id": "rod_wave__pieces",
@@ -384079,13 +384159,13 @@
     "release_date": "2025-09-13",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2025-09-13",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 27,
     "debut_rank": 27,
-    "total_chart_entries": 8,
+    "total_chart_entries": 9,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 8
+    "best_weeks_on_chart": 9
   },
   {
     "work_id": "sabrina_carpenter__juno",
@@ -386001,13 +386081,13 @@
     "release_date": "2026-03-28",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-03-28",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 64,
     "debut_rank": 77,
-    "total_chart_entries": 14,
+    "total_chart_entries": 15,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 14
+    "best_weeks_on_chart": 15
   },
   {
     "work_id": "sam_harris__i_d_do_it_all_again",
@@ -392382,13 +392462,13 @@
     "release_date": "2026-06-20",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-20",
-    "latest_chart_date": "2026-06-20",
-    "peak_rank": 98,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 94,
     "debut_rank": 98,
-    "total_chart_entries": 1,
+    "total_chart_entries": 2,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 1,
+    "best_weeks_on_chart": 2,
     "work_id": "shaboozey__cowgirl"
   },
   {
@@ -393200,13 +393280,13 @@
     "release_date": "2026-06-27",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-27",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 74,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 67,
     "debut_rank": 75,
-    "total_chart_entries": 2,
+    "total_chart_entries": 3,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 2,
+    "best_weeks_on_chart": 3,
     "work_id": "shakira_x_burna_boy__dai_dai"
   },
   {
@@ -396645,13 +396725,13 @@
     "release_date": "2026-01-03",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-01-03",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 19,
     "debut_rank": 100,
-    "total_chart_entries": 27,
+    "total_chart_entries": 28,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 27
+    "best_weeks_on_chart": 28
   },
   {
     "work_id": "sienna_spiro__the_visitor",
@@ -402009,13 +402089,29 @@
     "release_date": "2026-02-21",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-02-21",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 16,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 15,
     "debut_rank": 31,
-    "total_chart_entries": 20,
+    "total_chart_entries": 21,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 20
+    "best_weeks_on_chart": 21
+  },
+  {
+    "type": "single",
+    "title": "My Body Isn't Ready",
+    "artist": "sombr",
+    "release_date": "2026-07-11",
+    "release_date_source": "billboard_debut",
+    "first_chart_date": "2026-07-11",
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 30,
+    "debut_rank": 30,
+    "total_chart_entries": 1,
+    "weeks_at_number_one": 0,
+    "weeks_in_top_10": 0,
+    "best_weeks_on_chart": 1,
+    "work_id": "sombr__my_body_isn_t_ready"
   },
   {
     "work_id": "sombr__potential",
@@ -406347,13 +406443,13 @@
     "release_date": "2026-04-18",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-04-18",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 14,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 13,
     "debut_rank": 95,
-    "total_chart_entries": 12,
+    "total_chart_entries": 13,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 12
+    "best_weeks_on_chart": 13
   },
   {
     "type": "single",
@@ -406362,13 +406458,13 @@
     "release_date": "2026-06-13",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-13",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 67,
     "debut_rank": 85,
-    "total_chart_entries": 4,
+    "total_chart_entries": 5,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 4,
+    "best_weeks_on_chart": 5,
     "work_id": "stella_lefty_featuring_vincent_mason__something_to_lose"
   },
   {
@@ -407572,6 +407668,22 @@
     "weeks_in_top_10": 0,
     "best_weeks_on_chart": 1,
     "work_id": "steve_lacy__the_feeling"
+  },
+  {
+    "type": "single",
+    "title": "Is It Cool?",
+    "artist": "Steve Lacy Featuring SZA",
+    "release_date": "2026-07-11",
+    "release_date_source": "billboard_debut",
+    "first_chart_date": "2026-07-11",
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 87,
+    "debut_rank": 87,
+    "total_chart_entries": 1,
+    "weeks_at_number_one": 0,
+    "weeks_in_top_10": 0,
+    "best_weeks_on_chart": 1,
+    "work_id": "steve_lacy_featuring_sza__is_it_cool"
   },
   {
     "work_id": "steve_lawrence__only_love_me",
@@ -417241,13 +417353,13 @@
     "release_date": "2026-04-04",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-04-04",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 10,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 8,
     "debut_rank": 24,
-    "total_chart_entries": 14,
+    "total_chart_entries": 15,
     "weeks_at_number_one": 0,
-    "weeks_in_top_10": 5,
-    "best_weeks_on_chart": 39
+    "weeks_in_top_10": 6,
+    "best_weeks_on_chart": 40
   },
   {
     "work_id": "tami_davis__how_do_i_say_i_m_sorry",
@@ -420158,13 +420270,13 @@
     "release_date": "2026-06-20",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-20",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 1,
     "debut_rank": 1,
-    "total_chart_entries": 3,
+    "total_chart_entries": 4,
     "weeks_at_number_one": 2,
-    "weeks_in_top_10": 3,
-    "best_weeks_on_chart": 3,
+    "weeks_in_top_10": 4,
+    "best_weeks_on_chart": 4,
     "work_id": "taylor_swift__i_knew_it_i_knew_you"
   },
   {
@@ -423159,13 +423271,13 @@
     "release_date": "2026-04-25",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-04-25",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 76,
     "debut_rank": 82,
-    "total_chart_entries": 10,
+    "total_chart_entries": 11,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 10
+    "best_weeks_on_chart": 11
   },
   {
     "work_id": "teddy_swims__the_door",
@@ -423495,13 +423607,13 @@
     "release_date": "2026-04-18",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-04-18",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 60,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 57,
     "debut_rank": 91,
-    "total_chart_entries": 11,
+    "total_chart_entries": 12,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 11
+    "best_weeks_on_chart": 12
   },
   {
     "work_id": "tems__free_mind",
@@ -423527,13 +423639,13 @@
     "release_date": "2026-02-14",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-02-14",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 53,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 44,
     "debut_rank": 93,
-    "total_chart_entries": 14,
+    "total_chart_entries": 15,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 14
+    "best_weeks_on_chart": 15
   },
   {
     "work_id": "ten_wheel_drive_with_genya_ravan__morning_much_better",
@@ -505033,13 +505145,13 @@
     "release_date": "2026-05-16",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-05-16",
-    "latest_chart_date": "2026-07-04",
+    "latest_chart_date": "2026-07-11",
     "peak_rank": 77,
     "debut_rank": 94,
-    "total_chart_entries": 7,
+    "total_chart_entries": 8,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 7
+    "best_weeks_on_chart": 8
   },
   {
     "work_id": "violator_featuring_busta_rhymes__what_it_is",
@@ -518450,13 +518562,13 @@
     "release_date": "2026-06-06",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-06-06",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 25,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 19,
     "debut_rank": 66,
-    "total_chart_entries": 5,
+    "total_chart_entries": 6,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 5,
+    "best_weeks_on_chart": 6,
     "work_id": "yung_miami__spend_dat"
   },
   {
@@ -520453,13 +520565,13 @@
     "release_date": "2026-01-31",
     "release_date_source": "billboard_debut",
     "first_chart_date": "2026-01-31",
-    "latest_chart_date": "2026-07-04",
-    "peak_rank": 19,
+    "latest_chart_date": "2026-07-11",
+    "peak_rank": 17,
     "debut_rank": 82,
-    "total_chart_entries": 23,
+    "total_chart_entries": 24,
     "weeks_at_number_one": 0,
     "weeks_in_top_10": 0,
-    "best_weeks_on_chart": 23
+    "best_weeks_on_chart": 24
   },
   {
     "work_id": "zara_larsson__ruin_my_life",
